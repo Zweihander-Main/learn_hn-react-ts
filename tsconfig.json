@@ -1,0 +1,18 @@
+{
+	"compilerOptions": {
+		"baseUrl": "./app",
+		"paths": {
+			"~*": ["./*"]
+		},
+		"typeRoots": ["node_modules/@types"],
+		"esModuleInterop": true,
+		"sourceMap": true,
+		"jsx": "react",
+		"outDir": "./dist/",
+		"lib": ["es6", "dom"],
+		"moduleResolution": "Node",
+		"module": "ESNext"
+	},
+	"include": ["./app"],
+	"exclude": ["node_modules", "dist"]
+}

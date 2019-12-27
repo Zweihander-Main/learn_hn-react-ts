@@ -1,0 +1,18 @@
+{
+	"folders":
+	[
+		{
+			"folder_exclude_patterns":
+			[
+				"node_modules",
+				".cache"
+			],
+			"path": "."
+		}
+	],
+	"settings": {
+        "js_prettier": {
+            "auto_format_on_save": true
+        }
+    }
+}
