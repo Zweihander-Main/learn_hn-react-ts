@@ -1,92 +1,62 @@
-const id = 'YOUR_CLIENT_ID';
-const sec = 'YOUR_SECRET_ID';
-const params = `?client_id=${id}&client_secret=${sec}`;
+const api = 'https://hacker-news.firebaseio.com/v0';
+const json = '.json?print=pretty';
 
-function getErrorMsg(message: string, username: string): string {
-	if (message === 'Not Found') {
-		return `${username} doesn't exist`;
-	}
-	return message;
+function removeDead(posts: Array<HNItem>): Array<HNItem> {
+	return posts.filter(Boolean).filter(({ dead }: HNItem) => dead !== true);
 }
 
-function getProfile(username: string): Promise<GitHubUsersResponse> {
-	return fetch(`https://api.github.com/users/${username}${params}`)
-		.then((res: Response) => res.json())
-		.then((profile: GitHubUsersResponse) => {
-			if (profile.message) {
-				throw new Error(getErrorMsg(profile.message, username));
-			}
-			return profile;
-		});
+function removeDeleted(posts: Array<HNItem>): Array<HNItem> {
+	return posts.filter(({ deleted }: HNItem) => deleted !== true);
 }
 
-function getRepos(username: string): Promise<Array<GitHubRepoItem>> {
-	return fetch(
-		`https://api.github.com/users/${username}/repos${params}&per_page=100`
-	)
-		.then((res: Response) => res.json())
-		.then((repos: GitHubUserRepoResponse) => {
-			if (!Array.isArray(repos) && repos.message) {
-				throw new Error(getErrorMsg(repos.message, username));
-			}
-			return repos as Array<GitHubRepoItem>;
-		});
+function onlyComments(posts: Array<HNItem>): Array<HNItem> {
+	return posts.filter(({ type }: HNItem) => type === 'comment');
 }
 
-function getStarCount(repos: Array<GitHubRepoItem>): number {
-	return repos.reduce(
-		(
-			count: number,
-			{ stargazers_count: stargazersCount }: GitHubRepoItem
-		) => count + stargazersCount,
-		0
+function onlyPosts(posts: Array<HNItem>): Array<HNItem> {
+	return posts.filter(({ type }: HNItem) => type === 'story');
+}
+
+export function fetchItem(id: number): Promise<HNItem> {
+	return fetch(`${api}/item/${id}${json}`).then((res: Response) =>
+		res.json()
 	);
 }
 
-function calculateScore(
-	followers: number,
-	repos: Array<GitHubRepoItem>
-): number {
-	return followers * 3 + getStarCount(repos);
-}
-
-function getUserData(player: string): Promise<UserData> {
-	return Promise.all([getProfile(player), getRepos(player)]).then(
-		([profile, repos]: [GitHubUsersResponse, Array<GitHubRepoItem>]) =>
-			({
-				profile,
-				score: calculateScore(profile.followers, repos),
-			} as UserData)
+export function fetchComments(ids: Array<number>): Promise<Array<HNItem>> {
+	return Promise.all(ids.map(fetchItem)).then((comments: Array<HNItem>) =>
+		removeDeleted(onlyComments(removeDead(comments)))
 	);
 }
 
-function sortPlayers(players: [UserData, UserData]): [UserData, UserData] {
-	return players.sort((a, b) => b.score - a.score);
-}
-
-export function battle(
-	players: [string, string]
-): Promise<[UserData, UserData]> {
-	return Promise.all([
-		getUserData(players[0]),
-		getUserData(players[1]),
-	]).then((results: [UserData, UserData]) => sortPlayers(results));
-}
-
-export function fetchPopularRepos(
-	language: possibleLanguage
-): Promise<Array<GitHubRepoItem>> {
-	const endpoint = window.encodeURI(
-		`https://api.github.com/search/repositories?q=stars:>1+language:${language}&sort=stars&order=desc&type=Repositories`
-	);
-
-	return fetch(endpoint)
+export function fetchMainPosts(
+	type: 'top' | 'new' | 'best' | 'ask' | 'show' | 'job'
+): Promise<Array<HNItem>> {
+	return fetch(`${api}/${type}stories${json}`)
 		.then((res: Response) => res.json())
-		.then((data: GitHubSearchReponse<GitHubRepoItem>) => {
-			if (!data.items) {
-				throw new Error(data.message);
+		.then((ids: Array<number>) => {
+			if (!ids) {
+				throw new Error(
+					`There was an error fetching the ${type} posts.`
+				);
 			}
 
-			return data.items;
-		});
+			return ids.slice(0, 50);
+		})
+		.then((ids: Array<number>) => Promise.all(ids.map(fetchItem)))
+		.then((posts: Array<HNItem>) =>
+			removeDeleted(onlyPosts(removeDead(posts)))
+		);
+}
+
+export function fetchUser(id: number): Promise<HNUser> {
+	return fetch(`${api}/user/${id}${json}`).then((res: Response) =>
+		res.json()
+	);
+}
+
+export function fetchPosts(ids: Array<number>): Promise<Array<HNItem>> {
+	return Promise.all(ids.map(fetchItem)).then((posts: Array<HNItem>) =>
+		removeDeleted(onlyPosts(removeDead(posts)))
+	);
 }

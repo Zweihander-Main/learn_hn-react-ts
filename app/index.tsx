@@ -1,10 +1,14 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import './index.css';
 import { ThemeProvider } from './contexts/theme';
-// import Nav from './components/Nav';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-// import Loading from './components/Loading';
+import './index.css';
+import Nav from './components/Nav';
+import Loading from './components/Loading';
+import Top from './components/Top';
+import New from './components/New';
+import Post from './components/Post';
+import User from './components/User';
 
 class App extends React.Component<{}, Readonly<AppState>> {
 	state = {
@@ -25,6 +29,10 @@ class App extends React.Component<{}, Readonly<AppState>> {
 							<Nav />
 							<React.Suspense fallback={<Loading />}>
 								<Switch>
+									<Route exact path="/" component={Top} />
+									<Route exact path="/new" component={New} />
+									<Route path="/post" component={Post} />
+									<Route path="/user" component={User} />
 									<Route
 										render={(): JSX.Element => <h1>404</h1>}
 									/>
