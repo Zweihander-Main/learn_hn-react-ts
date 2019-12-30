@@ -25,7 +25,10 @@ interface HNUser {
 	submitted?: Array<number>;
 }
 
+type HNTypes = 'top' | 'new' | 'best' | 'ask' | 'show' | 'job';
+
 interface AppState {
 	theme: 'light' | 'dark';
 	toggleTheme: () => void;
 }
+

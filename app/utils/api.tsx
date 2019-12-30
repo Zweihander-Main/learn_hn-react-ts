@@ -29,9 +29,7 @@ export function fetchComments(ids: Array<number>): Promise<Array<HNItem>> {
 	);
 }
 
-export function fetchMainPosts(
-	type: 'top' | 'new' | 'best' | 'ask' | 'show' | 'job'
-): Promise<Array<HNItem>> {
+export function fetchMainPosts(type: HNTypes): Promise<Array<HNItem>> {
 	return fetch(`${api}/${type}stories${json}`)
 		.then((res: Response) => res.json())
 		.then((ids: Array<number>) => {

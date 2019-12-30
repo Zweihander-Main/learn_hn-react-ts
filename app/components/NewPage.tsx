@@ -1,7 +1,8 @@
 import * as React from 'react';
+import FetchItems from './FetchItems';
 
-export default class New extends React.Component {
+export default class Top extends React.Component {
 	render(): JSX.Element {
-		return <h1>New</h1>;
+		return <FetchItems type={'new'} />;
 	}
 }
