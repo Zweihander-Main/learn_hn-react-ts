@@ -3,14 +3,14 @@ import { Link } from 'react-router-dom';
 import { ThemeConsumer } from '../contexts/theme';
 import { formatDate } from '../utils/helpers';
 
-interface PostListSingleProps extends React.Props<PostListSingle> {
+interface ItemListSingleProps extends React.Props<ItemListSingle> {
 	item: HNItem;
 }
 
-export default class PostListSingle extends React.Component<
-	PostListSingleProps
+export default class ItemListSingle extends React.Component<
+	ItemListSingleProps
 > {
-	constructor(props: PostListSingleProps) {
+	constructor(props: ItemListSingleProps) {
 		super(props);
 	}
 

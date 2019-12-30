@@ -1,12 +1,12 @@
 import * as React from 'react';
-import PostListSingle from './PostListSingle';
+import ItemListSingle from './ItemListSingle';
 
-interface PostListProps {
+interface ItemListProps {
 	items: Array<HNItem>;
 }
 
-export default class PostList extends React.Component<PostListProps> {
-	constructor(props: PostListProps) {
+export default class ItemList extends React.Component<ItemListProps> {
+	constructor(props: ItemListProps) {
 		super(props);
 	}
 
@@ -17,7 +17,7 @@ export default class PostList extends React.Component<PostListProps> {
 			<ul>
 				{items?.length > 0
 					? items.map((item: HNItem) => {
-							return <PostListSingle key={item.id} item={item} />;
+							return <ItemListSingle key={item.id} item={item} />;
 					  })
 					: null}
 			</ul>

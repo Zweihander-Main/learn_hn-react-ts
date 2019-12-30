@@ -5,10 +5,11 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import './index.css';
 import Nav from './components/Nav';
 import Loading from './components/Loading';
-import Top from './components/Top';
-import New from './components/New';
-import Post from './components/Post';
-import User from './components/User';
+
+const TopPage = React.lazy(() => import('./components/TopPage'));
+const NewPage = React.lazy(() => import('./components/NewPage'));
+const PostPage = React.lazy(() => import('./components/PostPage'));
+const UserPage = React.lazy(() => import('./components/UserPage'));
 
 class App extends React.Component<{}, Readonly<AppState>> {
 	state = {
@@ -29,10 +30,14 @@ class App extends React.Component<{}, Readonly<AppState>> {
 							<Nav />
 							<React.Suspense fallback={<Loading />}>
 								<Switch>
-									<Route exact path="/" component={Top} />
-									<Route exact path="/new" component={New} />
-									<Route path="/post" component={Post} />
-									<Route path="/user" component={User} />
+									<Route exact path="/" component={TopPage} />
+									<Route
+										exact
+										path="/new"
+										component={NewPage}
+									/>
+									<Route path="/post" component={PostPage} />
+									<Route path="/user" component={UserPage} />
 									<Route
 										render={(): JSX.Element => <h1>404</h1>}
 									/>

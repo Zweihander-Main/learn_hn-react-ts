@@ -1,5 +1,5 @@
 import * as React from 'react';
-import PostList from './PostList';
+import ItemList from './ItemList';
 import { fetchMainPosts } from '../utils/api';
 
 interface TopState {
@@ -22,6 +22,6 @@ export default class Top extends React.Component<{}, Readonly<TopState>> {
 
 	render(): JSX.Element {
 		const { items } = this.state;
-		return <PostList items={items} />;
+		return <ItemList items={items} />;
 	}
 }
