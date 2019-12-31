@@ -1,5 +1,5 @@
 const api = 'https://hacker-news.firebaseio.com/v0';
-const json = '.json?print=pretty';
+const json = '.json?print=pretty'; //TODO kill pretty
 
 function removeDead(posts: Array<HNItem>): Array<HNItem> {
 	return posts.filter(Boolean).filter(({ dead }: HNItem) => dead !== true);
@@ -47,7 +47,7 @@ export function fetchMainPosts(type: HNTypes): Promise<Array<HNItem>> {
 		);
 }
 
-export function fetchUser(id: number): Promise<HNUser> {
+export function fetchUser(id: string): Promise<HNUser> {
 	return fetch(`${api}/user/${id}${json}`).then((res: Response) =>
 		res.json()
 	);
