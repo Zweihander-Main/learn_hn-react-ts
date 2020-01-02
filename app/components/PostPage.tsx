@@ -3,13 +3,12 @@ import queryString from 'query-string';
 import { fetchItem, fetchComments } from '../utils/api';
 import ItemMeta from './ItemMeta';
 import Loading from './Loading';
+import CommentTree from './CommentTree';
 import { RouteComponentProps } from 'react-router-dom';
 
 interface PostPageState {
-	item: HNItem;
-	comments: Array<HNItem>;
+	post: HNItem;
 	loadingPost: boolean;
-	loadingComments: boolean;
 	error: string;
 }
 
@@ -18,10 +17,8 @@ export default class PostPage extends React.Component<
 	Readonly<PostPageState>
 > {
 	state = {
-		item: null,
-		comments: null,
+		post: null,
 		loadingPost: true,
-		loadingComments: true,
 		error: null,
 	};
 
@@ -31,34 +28,21 @@ export default class PostPage extends React.Component<
 
 		fetchItem(numId)
 			.then(
-				(item): Promise<Array<HNItem>> => {
-					this.setState({ item, loadingPost: false });
-					return fetchComments(item.kids || []);
+				(post): Promise<Array<HNItem>> => {
+					this.setState({ post, loadingPost: false });
+					return fetchComments(post.kids || []);
 				}
-			)
-			.then((comments): void =>
-				this.setState({
-					comments,
-					loadingComments: false,
-				})
 			)
 			.catch(({ message }: { message: string }): void =>
 				this.setState({
 					error: message,
 					loadingPost: false,
-					loadingComments: false,
 				})
 			);
 	}
 
 	render(): JSX.Element {
-		const {
-			item,
-			comments,
-			loadingPost,
-			loadingComments,
-			error,
-		} = this.state;
+		const { post, loadingPost, error } = this.state;
 
 		if (error) {
 			return <p className="center-text error">{error}</p>;
@@ -71,39 +55,18 @@ export default class PostPage extends React.Component<
 				) : (
 					<React.Fragment>
 						<h1 className="header">
-							<a className="link" href={item.url}>
-								{item.title}
+							<a className="link" href={post.url}>
+								{post.title}
 							</a>
 						</h1>
 						<ItemMeta
-							by={item.by}
-							time={item.time}
-							id={item.id}
-							descendants={item.descendants}
+							by={post.by}
+							time={post.time}
+							id={post.id}
+							descendants={post.descendants}
 						/>
-						<p dangerouslySetInnerHTML={{ __html: item.text }} />
-						{loadingComments === true ? (
-							loadingPost === false && (
-								<Loading text="Fetching comments" />
-							)
-						) : (
-							<React.Fragment>
-								{comments.map((comment: HNItem) => (
-									<div key={comment.id} className="comment">
-										<ItemMeta
-											by={comment.by}
-											time={comment.time}
-											id={comment.id}
-										/>
-										<p
-											dangerouslySetInnerHTML={{
-												__html: comment.text,
-											}}
-										/>
-									</div>
-								))}
-							</React.Fragment>
-						)}
+						<p dangerouslySetInnerHTML={{ __html: post.text }} />
+						<CommentTree parent={post} />
 					</React.Fragment>
 				)}
 			</React.Fragment>
