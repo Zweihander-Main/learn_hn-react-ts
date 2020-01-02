@@ -17,17 +17,31 @@ export default class FetchItems extends React.Component<
 	FetchItemsProps,
 	Readonly<FetchItemsState>
 > {
-	constructor(props: FetchItemsProps) {
-		super(props);
-		this.state = {
+	state = {
+		items: null,
+		error: null,
+		loading: true,
+	};
+
+	componentDidMount(): void {
+		this.handleFetch();
+	}
+
+	componentDidUpdate(prevProps): void {
+		if (prevProps.type !== this.props.type) {
+			this.handleFetch();
+		}
+	}
+
+	handleFetch = (): void => {
+		this.setState({
 			items: null,
 			error: null,
 			loading: true,
-		};
-	}
+		});
 
-	componentDidMount(): void {
 		const { type } = this.props;
+
 		fetchMainPosts(type)
 			.then((items: Array<HNItem>): void =>
 				this.setState({ items, error: null, loading: false })
@@ -38,7 +52,7 @@ export default class FetchItems extends React.Component<
 					loading: false,
 				})
 			);
-	}
+	};
 
 	render(): JSX.Element {
 		const { items, error, loading } = this.state;

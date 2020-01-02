@@ -31,6 +31,42 @@ export default function Nav(): JSX.Element {
 								New
 							</NavLink>
 						</li>
+						<li>
+							<NavLink
+								activeStyle={activeStyle}
+								to="/best"
+								className="nav-link"
+							>
+								Best
+							</NavLink>
+						</li>
+						<li>
+							<NavLink
+								activeStyle={activeStyle}
+								to="/ask"
+								className="nav-link"
+							>
+								Ask
+							</NavLink>
+						</li>
+						<li>
+							<NavLink
+								activeStyle={activeStyle}
+								to="/show"
+								className="nav-link"
+							>
+								Show
+							</NavLink>
+						</li>
+						<li>
+							<NavLink
+								activeStyle={activeStyle}
+								to="/job"
+								className="nav-link"
+							>
+								Job
+							</NavLink>
+						</li>
 					</ul>
 					<button
 						style={{ fontSize: 30 }}

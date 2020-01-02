@@ -29,25 +29,29 @@ class App extends React.Component<{}, Readonly<AppState>> {
 							<Nav />
 							<React.Suspense fallback={<Loading />}>
 								<Switch>
-									<Route
-										exact
-										path="/"
-										render={(): JSX.Element => (
-											<ItemsPage type="top" />
-										)}
-									/>
-									<Route
-										exact
-										path="/new"
-										render={(): JSX.Element => (
-											<ItemsPage type="new" />
-										)}
-									/>
+									<Route exact path="/">
+										<ItemsPage type="top" />
+									</Route>
+									<Route path="/new">
+										<ItemsPage type="new" />
+									</Route>
+									<Route path="/best">
+										<ItemsPage type="best" />
+									</Route>
+									<Route path="/ask">
+										<ItemsPage type="ask" />
+									</Route>
+									<Route path="/show">
+										<ItemsPage type="show" />
+									</Route>
+									<Route path="/job">
+										<ItemsPage type="job" />
+									</Route>
 									<Route path="/post" component={PostPage} />
 									<Route path="/user" component={UserPage} />
-									<Route
-										render={(): JSX.Element => <h1>404</h1>}
-									/>
+									<Route>
+										<h1>404</h1>
+									</Route>
 								</Switch>
 							</React.Suspense>
 						</div>
