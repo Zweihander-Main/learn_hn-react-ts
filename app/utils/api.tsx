@@ -1,26 +1,51 @@
 const api = 'https://hacker-news.firebaseio.com/v0';
 const json = '.json?print=pretty'; //TODO kill pretty
 
+function notDead({ dead }: HNItem): boolean {
+	return dead !== true;
+}
+
+function notDeleted({ deleted }: HNItem): boolean {
+	return deleted !== true;
+}
+
+function isComment({ type }: HNItem): boolean {
+	return type === 'comment';
+}
+
+function isPost({ type }: HNItem): boolean {
+	return type === 'story';
+}
+
 function removeDead(posts: Array<HNItem>): Array<HNItem> {
-	return posts.filter(Boolean).filter(({ dead }: HNItem) => dead !== true);
+	return posts.filter(Boolean).filter(notDead);
 }
 
 function removeDeleted(posts: Array<HNItem>): Array<HNItem> {
-	return posts.filter(({ deleted }: HNItem) => deleted !== true);
+	return posts.filter(notDeleted);
 }
 
 function onlyComments(posts: Array<HNItem>): Array<HNItem> {
-	return posts.filter(({ type }: HNItem) => type === 'comment');
+	return posts.filter(isComment);
 }
 
 function onlyPosts(posts: Array<HNItem>): Array<HNItem> {
-	return posts.filter(({ type }: HNItem) => type === 'story');
+	return posts.filter(isPost);
 }
 
 export function fetchItem(id: number): Promise<HNItem> {
 	return fetch(`${api}/item/${id}${json}`).then((res: Response) =>
 		res.json()
 	);
+}
+
+export function fetchComment(id: number): Promise<HNItem | null> {
+	return fetchItem(id).then((comment: HNItem) => {
+		if (notDeleted(comment) && isComment(comment) && notDead(comment)) {
+			return comment;
+		}
+		return null;
+	});
 }
 
 export function fetchComments(ids: Array<number>): Promise<Array<HNItem>> {
