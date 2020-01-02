@@ -2,11 +2,15 @@ import * as React from 'react';
 import queryString from 'query-string';
 import { fetchItem, fetchComments } from '../utils/api';
 import ItemMeta from './ItemMeta';
+import Loading from './Loading';
 import { RouteComponentProps } from 'react-router-dom';
 
 interface PostPageState {
 	item: HNItem;
 	comments: Array<HNItem>;
+	loadingPost: boolean;
+	loadingComments: boolean;
+	error: string;
 }
 
 export default class PostPage extends React.Component<
@@ -16,6 +20,9 @@ export default class PostPage extends React.Component<
 	state = {
 		item: null,
 		comments: null,
+		loadingPost: true,
+		loadingComments: true,
+		error: null,
 	};
 
 	componentDidMount(): void {
@@ -23,22 +30,45 @@ export default class PostPage extends React.Component<
 		const numId = parseInt(id as string, 10);
 
 		fetchItem(numId)
-			.then((item) => {
-				this.setState({ item });
-				return fetchComments(item.kids || []);
-			})
-			.then((comments) =>
+			.then(
+				(item): Promise<Array<HNItem>> => {
+					this.setState({ item, loadingPost: false });
+					return fetchComments(item.kids || []);
+				}
+			)
+			.then((comments): void =>
 				this.setState({
 					comments,
+					loadingComments: false,
+				})
+			)
+			.catch(({ message }: { message: string }): void =>
+				this.setState({
+					error: message,
+					loadingPost: false,
+					loadingComments: false,
 				})
 			);
 	}
 
 	render(): JSX.Element {
-		const { item, comments } = this.state;
+		const {
+			item,
+			comments,
+			loadingPost,
+			loadingComments,
+			error,
+		} = this.state;
+
+		if (error) {
+			return <p className="center-text error">{error}</p>;
+		}
+
 		return (
 			<React.Fragment>
-				{item === null ? null : (
+				{loadingPost === true ? (
+					<Loading text="Fetching post" />
+				) : (
 					<React.Fragment>
 						<h1 className="header">
 							<a className="link" href={item.url}>
@@ -52,7 +82,11 @@ export default class PostPage extends React.Component<
 							descendants={item.descendants}
 						/>
 						<p dangerouslySetInnerHTML={{ __html: item.text }} />
-						{comments === null ? null : (
+						{loadingComments === true ? (
+							loadingPost === false && (
+								<Loading text="Fetching comments" />
+							)
+						) : (
 							<React.Fragment>
 								{comments.map((comment: HNItem) => (
 									<div key={comment.id} className="comment">

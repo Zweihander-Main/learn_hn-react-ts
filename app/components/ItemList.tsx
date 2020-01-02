@@ -15,11 +15,13 @@ export default class ItemList extends React.Component<ItemListProps> {
 
 		return (
 			<ul>
-				{items?.length > 0
-					? items.map((item: HNItem) => {
-							return <ItemListSingle key={item.id} item={item} />;
-					  })
-					: null}
+				{items?.length > 0 ? (
+					items.map((item: HNItem) => {
+						return <ItemListSingle key={item.id} item={item} />;
+					})
+				) : (
+					<p className="center-text">No items to display</p>
+				)}
 			</ul>
 		);
 	}

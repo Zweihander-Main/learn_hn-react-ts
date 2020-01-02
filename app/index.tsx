@@ -6,8 +6,7 @@ import './index.css';
 import Nav from './components/Nav';
 import Loading from './components/Loading';
 
-const TopPage = React.lazy(() => import('./components/TopPage'));
-const NewPage = React.lazy(() => import('./components/NewPage'));
+const ItemsPage = React.lazy(() => import('./components/ItemsPage'));
 const PostPage = React.lazy(() => import('./components/PostPage'));
 const UserPage = React.lazy(() => import('./components/UserPage'));
 
@@ -30,11 +29,19 @@ class App extends React.Component<{}, Readonly<AppState>> {
 							<Nav />
 							<React.Suspense fallback={<Loading />}>
 								<Switch>
-									<Route exact path="/" component={TopPage} />
+									<Route
+										exact
+										path="/"
+										render={(): JSX.Element => (
+											<ItemsPage type="top" />
+										)}
+									/>
 									<Route
 										exact
 										path="/new"
-										component={NewPage}
+										render={(): JSX.Element => (
+											<ItemsPage type="new" />
+										)}
 									/>
 									<Route path="/post" component={PostPage} />
 									<Route path="/user" component={UserPage} />

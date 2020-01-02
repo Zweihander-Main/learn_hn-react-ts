@@ -4,10 +4,14 @@ import { RouteComponentProps } from 'react-router-dom';
 import queryString from 'query-string';
 import { formatDate } from '../utils/helpers';
 import ItemList from './ItemList';
+import Loading from './Loading';
 
 interface UserPageState {
 	user: HNUser;
 	posts: Array<HNItem>;
+	loadingUser: boolean;
+	loadingPosts: boolean;
+	error: string;
 }
 
 export default class UserPage extends React.Component<
@@ -17,29 +21,48 @@ export default class UserPage extends React.Component<
 	state = {
 		user: null,
 		posts: null,
+		loadingUser: true,
+		loadingPosts: true,
+		error: null,
 	};
 
 	componentDidMount(): void {
 		const { id } = queryString.parse(this.props.location.search);
 
 		fetchUser(id as string)
-			.then((user) => {
-				this.setState({ user });
-				return fetchPosts(user.submitted || []);
-			})
-			.then((posts) =>
+			.then(
+				(user): Promise<Array<HNItem>> => {
+					this.setState({ user, loadingUser: false });
+					return fetchPosts(user.submitted || []);
+				}
+			)
+			.then((posts): void =>
 				this.setState({
 					posts,
+					loadingPosts: false,
+				})
+			)
+			.catch(({ message }: { message: string }): void =>
+				this.setState({
+					error: message,
+					loadingUser: false,
+					loadingPosts: false,
 				})
 			);
 	}
 
 	render(): JSX.Element {
-		const { user, posts } = this.state;
+		const { user, posts, loadingUser, loadingPosts, error } = this.state;
+
+		if (error) {
+			return <p className="center-text error">{error}</p>;
+		}
 
 		return (
 			<React.Fragment>
-				{user === null ? null : (
+				{loadingUser === true ? (
+					<Loading text="Fetching User" />
+				) : (
 					<React.Fragment>
 						<h1 className="header">{user.id}</h1>
 						<div className="meta-info-light">
@@ -53,7 +76,9 @@ export default class UserPage extends React.Component<
 						<p dangerouslySetInnerHTML={{ __html: user.about }} />
 					</React.Fragment>
 				)}
-				{posts === null ? null : (
+				{loadingPosts === true ? (
+					loadingUser === false && <Loading text="Fetching posts" />
+				) : (
 					<React.Fragment>
 						<h2>Posts</h2>
 						<ItemList items={posts} />
