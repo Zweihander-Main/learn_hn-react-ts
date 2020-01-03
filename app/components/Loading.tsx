@@ -20,7 +20,7 @@ interface LoadingState {
 
 export default class Loading extends React.Component<
 	LoadingProps,
-	Readonly<LoadingState>
+	LoadingState
 > {
 	interval: number;
 	state = {

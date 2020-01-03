@@ -16,7 +16,7 @@ interface FetchItemsState {
 
 export default class FetchItems extends React.Component<
 	FetchItemsProps,
-	Readonly<FetchItemsState>
+	FetchItemsState
 > {
 	state = {
 		items: null,

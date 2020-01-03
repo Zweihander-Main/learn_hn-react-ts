@@ -15,7 +15,7 @@ interface PostPageState {
 
 export default class PostPage extends React.Component<
 	RouteComponentProps,
-	Readonly<PostPageState>
+	PostPageState
 > {
 	state = {
 		post: null,

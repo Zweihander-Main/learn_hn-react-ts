@@ -17,7 +17,7 @@ interface UserPageState {
 
 export default class UserPage extends React.Component<
 	RouteComponentProps,
-	Readonly<UserPageState>
+	UserPageState
 > {
 	state = {
 		user: null,
