@@ -38,10 +38,6 @@ module.exports = {
 				test: /\.js$/,
 				loader: 'source-map-loader',
 			},
-			{
-				test: /\.css$/,
-				use: ['style-loader', 'css-loader'],
-			},
 		],
 	},
 	plugins: [

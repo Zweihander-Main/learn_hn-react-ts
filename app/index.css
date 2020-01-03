@@ -1,3 +1,15 @@
+:root {
+	--darkColor: #dadada;
+	--darkBG: #1c2022;
+	--darkLink: rgb(203, 203, 203);
+	--link: rgb(187, 46, 31);
+	--metaInfoLight: gray;
+	--metaInfoLightLink: black;
+	--metaInfoDark: gray;
+	--metaInfoDarkLink: #bebebe;
+	--commentBG: rgba(128, 128, 128, 0.1411764705882353);
+}
+
 html,
 body,
 #app {
@@ -30,17 +42,17 @@ li {
 }
 
 .dark {
-	color: #dadada;
-	background: #1c2022;
+	color: var(--darkColor);
+	background: var(--darkBG);
 	min-height: 100%;
 }
 
 .dark a {
-	color: rgb(203, 203, 203);
+	color: var(--darkLink);
 }
 
 .link {
-	color: rgb(187, 46, 31);
+	color: var(--link);
 	text-decoration: none;
 	font-weight: bold;
 }
@@ -80,11 +92,11 @@ li {
 
 .meta-info-light {
 	margin-top: 5px;
-	color: gray;
+	color: var(--metaInfoLight);
 }
 
 .meta-info-light a {
-	color: black;
+	color: var(--metaInfoLightLink);
 }
 
 .meta-info-light span {
@@ -94,11 +106,11 @@ li {
 
 .meta-info-dark {
 	margin-top: 5px;
-	color: gray;
+	color: var(--metaInfoDark);
 }
 
 .meta-info-dark a {
-	color: #bebebe;
+	color: var(--metaInfoDarkLink);
 }
 
 .meta-info-dark span {
@@ -107,7 +119,7 @@ li {
 }
 
 .comment {
-	background: rgba(128, 128, 128, 0.1411764705882353);
+	background: var(--commentBG);
 	padding: 10px;
 	margin: 10px 0;
 	border-radius: 5px;
