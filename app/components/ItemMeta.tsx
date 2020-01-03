@@ -13,6 +13,12 @@ interface ItemMetaProps {
 	item?: HNItem;
 }
 
+/**
+ * Renders meta information for a given post or comment
+ *
+ * @class      PostMetaInfo
+ * @return     {JSX.Element}
+ */
 const PostMetaInfo: React.FC<ItemMetaProps> = ({
 	by,
 	time,

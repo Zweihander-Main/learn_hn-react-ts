@@ -18,6 +18,11 @@ interface LoadingState {
 	content: string;
 }
 
+/**
+ * Renders a loading text element for use with API fetching
+ *
+ * @class      Loading
+ */
 export default class Loading extends React.Component<
 	LoadingProps,
 	LoadingState

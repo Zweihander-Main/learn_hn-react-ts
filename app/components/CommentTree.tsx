@@ -22,6 +22,12 @@ interface CommentTreeState {
 
 const commentsToLoad = 5;
 
+/**
+ * Takes a parent post and recursively fetches and renders comments of that
+ * parent, passing them function to toggle collapsed state
+ *
+ * @class      CommentTree
+ */
 export default class CommentTree extends React.Component<
 	CommentTreeProps,
 	CommentTreeState

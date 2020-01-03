@@ -16,6 +16,12 @@ interface ItemListState {
 
 const itemsToLoad = 50;
 
+/**
+ * Creates list of posts from given array of post data. Will lazy load/infinite
+ * scroll data beyond itemsToLoad limit.
+ *
+ * @class      ItemList
+ */
 export default class ItemList extends React.Component<
 	ItemListProps,
 	ItemListState

@@ -6,6 +6,12 @@ interface ItemListSingleProps {
 	item: HNItem;
 }
 
+/**
+ * Renders a single post in a list of posts
+ *
+ * @class      ItemListSingle
+ * @return     {JSX.Element}
+ */
 const ItemListSingle: React.FC<ItemListSingleProps> = ({
 	item,
 }: ItemListSingleProps): JSX.Element => {

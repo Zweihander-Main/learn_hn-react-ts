@@ -11,6 +11,12 @@ interface CommentProps {
 	collapsed: boolean;
 }
 
+/**
+ * Renders a single comment including collapse button
+ *
+ * @class      Comment
+ * @return     {JSX.Element}
+ */
 const Comment: React.FC<CommentProps> = ({
 	comment,
 	depth,

@@ -6,6 +6,13 @@ const activeStyle = {
 	color: 'rgb(187,46,31)',
 };
 
+/**
+ * Renders a navigation bar with links to different post type listing and a
+ * theme switcher
+ *
+ * @class      Nav
+ * @return     {JSX.Element}
+ */
 const Nav: React.FC = (): JSX.Element => {
 	return (
 		<ThemeConsumer>

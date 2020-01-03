@@ -11,6 +11,11 @@ const ItemsPage = React.lazy(() => import('./components/ItemsPage'));
 const PostPage = React.lazy(() => import('./components/PostPage'));
 const UserPage = React.lazy(() => import('./components/UserPage'));
 
+/**
+ * Sets up application including meta information, theme context, and routing
+ *
+ * @class      App (name)
+ */
 class App extends React.Component<{}, AppState> {
 	state = {
 		theme: 'light',

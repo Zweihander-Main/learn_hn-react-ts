@@ -15,6 +15,12 @@ interface UserPageState {
 	error: string;
 }
 
+/**
+ * Creates the listing page for a single user including user info and listing of
+ * user submitted posts
+ *
+ * @class      UserPage (name)
+ */
 export default class UserPage extends React.Component<
 	RouteComponentProps,
 	UserPageState

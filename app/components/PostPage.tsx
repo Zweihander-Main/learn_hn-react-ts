@@ -13,6 +13,12 @@ interface PostPageState {
 	error: string;
 }
 
+/**
+ * Creates the listing of a single post including post information and comment
+ * tree
+ *
+ * @class      PostPage
+ */
 export default class PostPage extends React.Component<
 	RouteComponentProps,
 	PostPageState

@@ -5,19 +5,25 @@ import Loading from './Loading';
 import { fetchMainPosts } from '../utils/api';
 import Helmet from 'react-helmet';
 
-interface FetchItemsProps extends React.Props<FetchItems> {
+interface ItemsPageProps extends React.Props<ItemsPage> {
 	type: HNTypes;
 }
 
-interface FetchItemsState {
+interface ItemsPageState {
 	items: Array<HNItem>;
 	error: string;
 	loading: boolean;
 }
 
-export default class FetchItems extends React.Component<
-	FetchItemsProps,
-	FetchItemsState
+/**
+ * Fetches a list of posts for the given post type and renders a page listing
+ * those posts
+ *
+ * @class      ItemsPage
+ */
+export default class ItemsPage extends React.Component<
+	ItemsPageProps,
+	ItemsPageState
 > {
 	static propTypes = {
 		type: propTypesHNTypes.isRequired,
