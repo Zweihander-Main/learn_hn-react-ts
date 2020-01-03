@@ -2,6 +2,7 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { ThemeProvider } from './contexts/theme';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import Helmet from 'react-helmet';
 import './index.css';
 import Nav from './components/Nav';
 import Loading from './components/Loading';
@@ -23,6 +24,7 @@ class App extends React.Component<{}, Readonly<AppState>> {
 	render(): JSX.Element {
 		return (
 			<Router>
+				<Helmet defaultTitle="HackerNews" titleTemplate="HN - %s" />
 				<ThemeProvider value={this.state}>
 					<div className={this.state.theme}>
 						<div className="container">

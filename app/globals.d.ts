@@ -17,7 +17,7 @@ interface HNItem {
 }
 
 interface HNUser {
-	id: number;
+	id: string;
 	created: number;
 	karma: number;
 	delay?: number;

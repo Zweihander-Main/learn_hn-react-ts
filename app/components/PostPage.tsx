@@ -5,6 +5,7 @@ import ItemMeta from './ItemMeta';
 import Loading from './Loading';
 import CommentTree from './CommentTree';
 import { RouteComponentProps } from 'react-router-dom';
+import Helmet from 'react-helmet';
 
 interface PostPageState {
 	post: HNItem;
@@ -44,15 +45,27 @@ export default class PostPage extends React.Component<
 		}
 	}
 
-	render(): JSX.Element {
+	render(): JSX.Element | JSX.Element[] {
 		const { post, loadingPost, error } = this.state;
+		const pageTitle = loadingPost === true ? 'Loading Post' : post.title;
+		const titleJSX = (
+			<Helmet key={`title-${pageTitle}`}>
+				<title>{pageTitle}</title>
+			</Helmet>
+		);
 
 		if (error) {
-			return <p className="center-text error">{error}</p>;
+			return [
+				titleJSX,
+				<p key={`error-${pageTitle}`} className="center-text error">
+					{error}
+				</p>,
+			];
 		}
 
-		return (
-			<React.Fragment>
+		return [
+			titleJSX,
+			<React.Fragment key={`post-${pageTitle}`}>
 				{loadingPost === true ? (
 					<Loading text="Fetching post" />
 				) : (
@@ -72,7 +85,7 @@ export default class PostPage extends React.Component<
 						<CommentTree parent={post} />
 					</React.Fragment>
 				)}
-			</React.Fragment>
-		);
+			</React.Fragment>,
+		];
 	}
 }

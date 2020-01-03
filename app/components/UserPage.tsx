@@ -2,6 +2,7 @@ import * as React from 'react';
 import { fetchUser, fetchPosts } from '../utils/api';
 import { RouteComponentProps } from 'react-router-dom';
 import queryString from 'query-string';
+import Helmet from 'react-helmet';
 import { formatDate } from '../utils/helpers';
 import ItemList from './ItemList';
 import Loading from './Loading';
@@ -51,15 +52,27 @@ export default class UserPage extends React.Component<
 			);
 	}
 
-	render(): JSX.Element {
+	render(): JSX.Element | JSX.Element[] {
 		const { user, posts, loadingUser, loadingPosts, error } = this.state;
+		const pageTitle = loadingUser === true ? 'Loading User' : user.id;
+		const titleJSX = (
+			<Helmet key={`title-${pageTitle}`}>
+				<title>{pageTitle}</title>
+			</Helmet>
+		);
 
 		if (error) {
-			return <p className="center-text error">{error}</p>;
+			return [
+				titleJSX,
+				<p key={`error-${pageTitle}`} className="center-text error">
+					{error}
+				</p>,
+			];
 		}
 
-		return (
-			<React.Fragment>
+		return [
+			titleJSX,
+			<React.Fragment key={`user-${pageTitle}`}>
 				{loadingUser === true ? (
 					<Loading text="Fetching User" />
 				) : (
@@ -84,7 +97,7 @@ export default class UserPage extends React.Component<
 						<ItemList items={posts} />
 					</React.Fragment>
 				)}
-			</React.Fragment>
-		);
+			</React.Fragment>,
+		];
 	}
 }

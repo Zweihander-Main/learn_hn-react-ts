@@ -2,6 +2,7 @@ import * as React from 'react';
 import ItemList from './ItemList';
 import Loading from './Loading';
 import { fetchMainPosts } from '../utils/api';
+import Helmet from 'react-helmet';
 
 interface FetchItemsProps extends React.Props<FetchItems> {
 	type: HNTypes;
@@ -55,17 +56,31 @@ export default class FetchItems extends React.Component<
 			);
 	};
 
-	render(): JSX.Element {
+	render(): JSX.Element | JSX.Element[] {
 		const { items, error, loading } = this.state;
+		const { type } = this.props;
+
+		const title = `${type[0].toUpperCase() +
+			type.slice(1).toLowerCase()} Stories`;
+		const titleJSX = (
+			<Helmet key={`title-${title}`}>
+				<title>{title}</title>
+			</Helmet>
+		);
 
 		if (loading === true) {
-			return <Loading />;
+			return [titleJSX, <Loading key={`loading-${title}`} />];
 		}
 
 		if (error) {
-			return <p className="center-text error">{error}</p>;
+			return [
+				titleJSX,
+				<p key={`error-${title}`} className="center-text error">
+					{error}
+				</p>,
+			];
 		}
 
-		return <ItemList items={items} />;
+		return [titleJSX, <ItemList key={`items-${title}`} items={items} />];
 	}
 }
