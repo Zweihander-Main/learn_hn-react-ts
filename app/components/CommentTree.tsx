@@ -61,10 +61,10 @@ export default class CommentTree extends React.Component<
 			(prevState: CommentTreeState): CommentTreeState => {
 				const { loadedComments, comments, loading, error } = prevState;
 				const newLength = loadedComments.length + commentsToLoad;
-				const commentsToAdd = comments.slice(0, newLength);
+				const newComments = comments.slice(0, newLength);
 
 				return {
-					loadedComments: [...loadedComments, ...commentsToAdd],
+					loadedComments: newComments,
 					hasMore: comments.length > newLength ? true : false,
 					comments,
 					loading,

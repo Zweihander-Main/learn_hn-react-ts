@@ -20,7 +20,7 @@ export default class ItemList extends React.Component<
 > {
 	constructor(props: ItemListProps) {
 		super(props);
-		const items = props.items;
+		const { items } = this.props;
 
 		if (items.length > 0) {
 			this.state = {
@@ -39,12 +39,12 @@ export default class ItemList extends React.Component<
 		this.setState(
 			(prevState: ItemListState): ItemListState => {
 				const { loadedItems } = prevState;
-				const items = this.props.items;
+				const { items } = this.props;
 				const newLength = loadedItems.length + itemsToLoad;
-				const itemsToAdd = items.slice(0, newLength);
+				const newItems = items.slice(0, newLength);
 
 				return {
-					loadedItems: [...loadedItems, ...itemsToAdd],
+					loadedItems: newItems,
 					hasMore: items.length > newLength ? true : false,
 				};
 			}
@@ -56,20 +56,20 @@ export default class ItemList extends React.Component<
 
 		return (
 			<ul>
-				<InfiniteScroll
-					dataLength={loadedItems.length}
-					next={this.addMorePosts}
-					hasMore={hasMore}
-					loader={<Loading text="Loading more posts" />}
-				>
-					{loadedItems?.length > 0 ? (
-						loadedItems.map((item: HNItem) => {
-							return <ItemListSingle key={item.id} item={item} />;
-						})
-					) : (
-						<p className="center-text">No items to display</p>
-					)}
-				</InfiniteScroll>
+				{loadedItems?.length > 0 ? (
+					<InfiniteScroll
+						dataLength={loadedItems.length}
+						next={this.addMorePosts}
+						hasMore={hasMore}
+						loader={<Loading text="Loading more posts" />}
+					>
+						{loadedItems.map((item: HNItem) => (
+							<ItemListSingle key={item.id} item={item} />
+						))}
+					</InfiniteScroll>
+				) : (
+					<p className="center-text">No items to display</p>
+				)}
 			</ul>
 		);
 	}
