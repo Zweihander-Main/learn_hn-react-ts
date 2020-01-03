@@ -90,7 +90,8 @@ export default class CommentTree extends React.Component<
 		);
 	};
 
-	toggleCollapse = (): void => {
+	toggleCollapse = (e: React.MouseEvent<HTMLElement>): void => {
+		e.preventDefault();
 		this.setState((prevState) => ({
 			...prevState,
 			collapsed: !prevState.collapsed,

@@ -135,3 +135,11 @@ li {
 .toggleCollapse:hover {
 	text-decoration: underline;
 }
+
+a.toggle-dark {
+	color: var(--metaInfoDarkLink);
+}
+
+a.toggle-light {
+	color: var(--metaInfoLightLink);
+}
