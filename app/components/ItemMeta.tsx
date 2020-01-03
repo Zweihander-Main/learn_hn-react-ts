@@ -40,7 +40,13 @@ export default function PostMetaInfo({
 							>
 								{descendants}
 							</Link>{' '}
-							comments
+							comments [
+							<a
+								href={`https://news.ycombinator.com/item?id=${id}`}
+							>
+								hn
+							</a>
+							]
 						</span>
 					)}
 				</div>
