@@ -15,6 +15,7 @@ interface CommentTreeState {
 	hasMore: boolean;
 	loadedComments: Array<HNItem>;
 	error: string;
+	collapsed: boolean;
 }
 
 const commentsToLoad = 5;
@@ -33,6 +34,7 @@ export default class CommentTree extends React.Component<
 		hasMore: false,
 		loadedComments: [],
 		error: null,
+		collapsed: false,
 	};
 
 	componentDidMount(): void {
@@ -59,7 +61,13 @@ export default class CommentTree extends React.Component<
 	addMorePosts = (): void => {
 		this.setState(
 			(prevState: CommentTreeState): CommentTreeState => {
-				const { loadedComments, comments, loading, error } = prevState;
+				const {
+					loadedComments,
+					comments,
+					loading,
+					error,
+					collapsed,
+				} = prevState;
 				const newLength = loadedComments.length + commentsToLoad;
 				const newComments = comments.slice(0, newLength);
 
@@ -69,13 +77,27 @@ export default class CommentTree extends React.Component<
 					comments,
 					loading,
 					error,
+					collapsed,
 				};
 			}
 		);
 	};
 
+	toggleCollapse = (): void => {
+		this.setState((prevState) => ({
+			...prevState,
+			collapsed: !prevState.collapsed,
+		}));
+	};
+
 	render(): JSX.Element {
-		const { loadedComments, loading, hasMore, error } = this.state;
+		const {
+			loadedComments,
+			loading,
+			hasMore,
+			error,
+			collapsed,
+		} = this.state;
 		const { parent, depth } = this.props;
 
 		if (error) {
@@ -89,22 +111,31 @@ export default class CommentTree extends React.Component<
 				) : (
 					<React.Fragment>
 						{depth !== -1 && (
-							<Comment comment={parent} depth={depth} />
+							<Comment
+								comment={parent}
+								depth={depth}
+								toggleCollapse={this.toggleCollapse}
+								collapsed={collapsed}
+							/>
 						)}
-						<InfiniteScroll
-							dataLength={loadedComments.length}
-							next={this.addMorePosts}
-							hasMore={hasMore}
-							loader={<Loading text="Loading more comments" />}
-						>
-							{loadedComments.map((comment: HNItem) => (
-								<CommentTree
-									key={comment.id}
-									parent={comment}
-									depth={depth + 1}
-								/>
-							))}
-						</InfiniteScroll>
+						{collapsed !== true && (
+							<InfiniteScroll
+								dataLength={loadedComments.length}
+								next={this.addMorePosts}
+								hasMore={hasMore}
+								loader={
+									<Loading text="Loading more comments" />
+								}
+							>
+								{loadedComments.map((comment: HNItem) => (
+									<CommentTree
+										key={comment.id}
+										parent={comment}
+										depth={depth + 1}
+									/>
+								))}
+							</InfiniteScroll>
+						)}
 					</React.Fragment>
 				)}
 			</React.Fragment>
