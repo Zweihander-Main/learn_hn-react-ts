@@ -1,6 +1,6 @@
 import * as React from 'react';
 import queryString from 'query-string';
-import { fetchItem, fetchComments } from '../utils/api';
+import { fetchItem } from '../utils/api';
 import ItemMeta from './ItemMeta';
 import Loading from './Loading';
 import CommentTree from './CommentTree';
@@ -23,22 +23,25 @@ export default class PostPage extends React.Component<
 	};
 
 	componentDidMount(): void {
-		const { id } = queryString.parse(this.props.location.search);
-		const numId = parseInt(id as string, 10);
+		const item = this.props.location.state?.item;
 
-		fetchItem(numId)
-			.then(
-				(post): Promise<Array<HNItem>> => {
+		if (item) {
+			this.setState({ post: item, loadingPost: false });
+		} else {
+			const { id } = queryString.parse(this.props.location.search);
+			const numId = parseInt(id as string, 10);
+
+			fetchItem(numId)
+				.then((post): void => {
 					this.setState({ post, loadingPost: false });
-					return fetchComments(post.kids || []);
-				}
-			)
-			.catch(({ message }: { message: string }): void =>
-				this.setState({
-					error: message,
-					loadingPost: false,
 				})
-			);
+				.catch(({ message }: { message: string }): void =>
+					this.setState({
+						error: message,
+						loadingPost: false,
+					})
+				);
+		}
 	}
 
 	render(): JSX.Element {

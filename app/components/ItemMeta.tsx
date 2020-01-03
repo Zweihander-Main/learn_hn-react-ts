@@ -8,6 +8,7 @@ interface ItemMetaProps {
 	time: number;
 	id: number;
 	descendants?: number;
+	item?: HNItem;
 }
 
 export default function PostMetaInfo({
@@ -15,6 +16,7 @@ export default function PostMetaInfo({
 	time,
 	id,
 	descendants,
+	item,
 }: ItemMetaProps): JSX.Element {
 	return (
 		<ThemeConsumer>
@@ -27,7 +29,17 @@ export default function PostMetaInfo({
 					{typeof descendants === 'number' && (
 						<span>
 							with{' '}
-							<Link to={`/post?id=${id}`}>{descendants}</Link>{' '}
+							<Link
+								to={{
+									pathname: '/post',
+									search: `?id=${id}`,
+									state: {
+										item: item,
+									},
+								}}
+							>
+								{descendants}
+							</Link>{' '}
 							comments
 						</span>
 					)}

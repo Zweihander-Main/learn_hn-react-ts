@@ -13,7 +13,9 @@ export default class ItemListSingle extends React.Component<
 	}
 
 	render(): JSX.Element {
-		const { title, url, by, time, id, descendants } = this.props.item;
+		const { item } = this.props;
+		const { title, url, by, time, id, descendants } = item;
+
 		return (
 			<li className="post">
 				<a className="link" href={url}>
@@ -24,6 +26,7 @@ export default class ItemListSingle extends React.Component<
 					time={time}
 					descendants={descendants}
 					id={id}
+					item={item}
 				/>
 			</li>
 		);
