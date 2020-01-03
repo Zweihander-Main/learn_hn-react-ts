@@ -1,5 +1,5 @@
 const api = 'https://hacker-news.firebaseio.com/v0';
-const json = '.json?print=pretty'; //TODO kill pretty
+const json = '.json';
 
 function notDead({ dead }: HNItem): boolean {
 	return dead !== true;
