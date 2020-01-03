@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { HNItem as propTypesHNItem } from '../globals.PropTypes';
 import ItemMeta from './ItemMeta';
 
 interface ItemListSingleProps {
@@ -24,6 +25,10 @@ const ItemListSingle: React.FC<ItemListSingleProps> = ({
 			/>
 		</li>
 	);
+};
+
+ItemListSingle.propTypes = {
+	item: propTypesHNItem.isRequired,
 };
 
 export default ItemListSingle;

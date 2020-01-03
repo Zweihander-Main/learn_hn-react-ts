@@ -1,10 +1,12 @@
 import * as React from 'react';
+import * as PropTypes from 'prop-types';
+import { HNItem as propTypesHNItem } from '../globals.PropTypes';
 import ItemListSingle from './ItemListSingle';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import Loading from './Loading';
 
 interface ItemListProps extends React.Props<ItemList> {
-	items: Array<HNItem>;
+	items?: Array<HNItem>;
 }
 
 interface ItemListState {
@@ -18,11 +20,15 @@ export default class ItemList extends React.Component<
 	ItemListProps,
 	ItemListState
 > {
+	static propTypes = {
+		item: PropTypes.arrayOf(propTypesHNItem),
+	};
+
 	constructor(props: ItemListProps) {
 		super(props);
 		const { items } = this.props;
 
-		if (items.length > 0) {
+		if (items?.length > 0) {
 			this.state = {
 				hasMore: true,
 				loadedItems: items.slice(0, itemsToLoad),

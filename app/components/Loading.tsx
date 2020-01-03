@@ -22,6 +22,16 @@ export default class Loading extends React.Component<
 	LoadingProps,
 	LoadingState
 > {
+	static propTypes = {
+		text: PropTypes.string.isRequired,
+		speed: PropTypes.number.isRequired,
+	};
+
+	static defaultProps = {
+		text: 'Loading',
+		speed: 300,
+	};
+
 	interval: number;
 	state = {
 		content: this.props.text,
@@ -48,14 +58,4 @@ export default class Loading extends React.Component<
 	render(): JSX.Element {
 		return <p style={styles.content}>{this.state.content}</p>;
 	}
-
-	static propTypes = {
-		text: PropTypes.string.isRequired,
-		speed: PropTypes.number.isRequired,
-	};
-
-	static defaultProps = {
-		text: 'Loading',
-		speed: 300,
-	};
 }

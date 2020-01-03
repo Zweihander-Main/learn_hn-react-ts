@@ -1,4 +1,6 @@
 import * as React from 'react';
+import * as PropTypes from 'prop-types';
+import { HNItem as propTypesHNItem } from '../globals.PropTypes';
 import { fetchComments } from '../utils/api';
 import Loading from './Loading';
 import Comment from './Comment';
@@ -26,6 +28,11 @@ export default class CommentTree extends React.Component<
 > {
 	static defaultProps = {
 		depth: -1,
+	};
+
+	static propTypes = {
+		parent: propTypesHNItem.isRequired,
+		depth: PropTypes.number.isRequired,
 	};
 
 	state = {

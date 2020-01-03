@@ -1,4 +1,6 @@
-import React from 'react';
+import * as React from 'react';
+import * as PropTypes from 'prop-types';
+import { HNItem as propTypesHNItem } from '../globals.PropTypes';
 import { Link } from 'react-router-dom';
 import { formatDate } from '../utils/helpers';
 import { ThemeConsumer } from '../contexts/theme';
@@ -53,6 +55,14 @@ const PostMetaInfo: React.FC<ItemMetaProps> = ({
 			)}
 		</ThemeConsumer>
 	);
+};
+
+PostMetaInfo.propTypes = {
+	by: PropTypes.string.isRequired,
+	time: PropTypes.number.isRequired,
+	id: PropTypes.number.isRequired,
+	descendants: PropTypes.number,
+	item: propTypesHNItem,
 };
 
 export default PostMetaInfo;

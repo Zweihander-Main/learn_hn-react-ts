@@ -1,4 +1,6 @@
 import * as React from 'react';
+import * as PropTypes from 'prop-types';
+import { HNItem as propTypesHNItem } from '../globals.PropTypes';
 import ItemMeta from './ItemMeta';
 
 interface CommentProps {
@@ -33,6 +35,13 @@ const Comment: React.FC<CommentProps> = ({
 			)}
 		</div>
 	);
+};
+
+Comment.propTypes = {
+	comment: propTypesHNItem.isRequired,
+	depth: PropTypes.number.isRequired,
+	toggleCollapse: PropTypes.func.isRequired,
+	collapsed: PropTypes.bool.isRequired,
 };
 
 export default Comment;

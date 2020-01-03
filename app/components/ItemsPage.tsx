@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { HNTypes as propTypesHNTypes } from '../globals.PropTypes';
 import ItemList from './ItemList';
 import Loading from './Loading';
 import { fetchMainPosts } from '../utils/api';
@@ -18,6 +19,10 @@ export default class FetchItems extends React.Component<
 	FetchItemsProps,
 	FetchItemsState
 > {
+	static propTypes = {
+		type: propTypesHNTypes.isRequired,
+	};
+
 	state = {
 		items: null,
 		error: null,
