@@ -14,6 +14,7 @@ interface CommentTreeState {
 	loading: boolean;
 	hasMore: boolean;
 	loadedComments: Array<HNItem>;
+	error: string;
 }
 
 const commentsToLoad = 5;
@@ -31,25 +32,34 @@ export default class CommentTree extends React.Component<
 		loading: true,
 		hasMore: false,
 		loadedComments: [],
+		error: null,
 	};
 
 	componentDidMount(): void {
 		const { parent } = this.props;
 
-		fetchComments(parent.kids || []).then((comments: Array<HNItem>): void =>
-			this.setState({
-				comments,
-				loading: false,
-				loadedComments: comments.slice(0, commentsToLoad),
-				hasMore: comments.length > 0 ? true : false,
-			})
-		);
+		fetchComments(parent.kids || [])
+			.then((comments: Array<HNItem>): void =>
+				this.setState({
+					comments,
+					loading: false,
+					loadedComments: comments.slice(0, commentsToLoad),
+					hasMore: comments.length > 0 ? true : false,
+				})
+			)
+			.catch(({ message }: { message: string }): void =>
+				this.setState({
+					error: message,
+					loading: false,
+					hasMore: false,
+				})
+			);
 	}
 
 	addMorePosts = (): void => {
 		this.setState(
 			(prevState: CommentTreeState): CommentTreeState => {
-				const { loadedComments, comments, loading } = prevState;
+				const { loadedComments, comments, loading, error } = prevState;
 				const newLength = loadedComments.length + commentsToLoad;
 				const commentsToAdd = comments.slice(0, newLength);
 
@@ -58,14 +68,19 @@ export default class CommentTree extends React.Component<
 					hasMore: comments.length > newLength ? true : false,
 					comments,
 					loading,
+					error,
 				};
 			}
 		);
 	};
 
 	render(): JSX.Element {
-		const { loadedComments, loading, hasMore } = this.state;
+		const { loadedComments, loading, hasMore, error } = this.state;
 		const { parent, depth } = this.props;
+
+		if (error) {
+			return <p className="center-text error">{error}</p>;
+		}
 
 		return (
 			<React.Fragment>
