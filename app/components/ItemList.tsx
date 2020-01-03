@@ -12,6 +12,8 @@ interface ItemListState {
 	loadedItems: Array<HNItem>;
 }
 
+const itemsToLoad = 50;
+
 export default class ItemList extends React.Component<
 	ItemListProps,
 	ItemListState
@@ -23,7 +25,7 @@ export default class ItemList extends React.Component<
 		if (items.length > 0) {
 			this.state = {
 				hasMore: true,
-				loadedItems: items.slice(0, 50),
+				loadedItems: items.slice(0, itemsToLoad),
 			};
 		} else {
 			this.state = {
@@ -38,7 +40,7 @@ export default class ItemList extends React.Component<
 			(prevState: ItemListState): ItemListState => {
 				const { loadedItems } = prevState;
 				const items = this.props.items;
-				const newLength = loadedItems.length + 50;
+				const newLength = loadedItems.length + itemsToLoad;
 				const itemsToAdd = items.slice(0, newLength);
 
 				return {
