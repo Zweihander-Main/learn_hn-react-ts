@@ -64,7 +64,7 @@ export function fetchMainPosts(type: HNTypes): Promise<Array<HNItem>> {
 				);
 			}
 
-			return ids.slice(0, 50);
+			return ids;
 		})
 		.then((ids: Array<number>) => Promise.all(ids.map(fetchItem)))
 		.then((posts: Array<HNItem>) =>

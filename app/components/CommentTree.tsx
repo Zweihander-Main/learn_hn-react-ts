@@ -29,7 +29,7 @@ export default class CommentTree extends React.Component<
 	componentDidMount(): void {
 		const { parent } = this.props;
 
-		fetchComments(parent.kids || []).then((comments): void =>
+		fetchComments(parent.kids || []).then((comments: Array<HNItem>): void =>
 			this.setState({ comments, loading: false })
 		);
 	}

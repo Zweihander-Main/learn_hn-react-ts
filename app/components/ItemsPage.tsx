@@ -43,9 +43,10 @@ export default class FetchItems extends React.Component<
 		const { type } = this.props;
 
 		fetchMainPosts(type)
-			.then((items: Array<HNItem>): void =>
-				this.setState({ items, error: null, loading: false })
-			)
+			.then((returnedItems: Array<HNItem>): void => {
+				const items = returnedItems.slice(0, 50);
+				this.setState({ items, error: null, loading: false });
+			})
 			.catch(({ message }: { message: string }): void =>
 				this.setState({
 					error: message,
