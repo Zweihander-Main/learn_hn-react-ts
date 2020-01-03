@@ -48,14 +48,11 @@ export default class CommentTree extends React.Component<
 							<Comment comment={parent} depth={depth} />
 						)}
 						{comments.map((comment: HNItem) => (
-							<React.Fragment key={comment.id}>
-								{
-									<CommentTree
-										parent={comment}
-										depth={depth + 1}
-									/>
-								}
-							</React.Fragment>
+							<CommentTree
+								key={comment.id}
+								parent={comment}
+								depth={depth + 1}
+							/>
 						))}
 					</React.Fragment>
 				)}

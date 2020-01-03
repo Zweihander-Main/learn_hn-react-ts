@@ -4,9 +4,6 @@ import * as PropTypes from 'prop-types';
 const styles = {
 	content: {
 		fontSize: '35px',
-		position: 'absolute' as 'absolute',
-		left: '0',
-		right: '0',
 		marginTop: '20px',
 		textAlign: 'center' as 'center',
 	},
