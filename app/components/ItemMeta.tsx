@@ -11,13 +11,13 @@ interface ItemMetaProps {
 	item?: HNItem;
 }
 
-export default function PostMetaInfo({
+const PostMetaInfo: React.FC<ItemMetaProps> = ({
 	by,
 	time,
 	id,
 	descendants,
 	item,
-}: ItemMetaProps): JSX.Element {
+}: ItemMetaProps): JSX.Element => {
 	return (
 		<ThemeConsumer>
 			{({ theme }: AppState): JSX.Element => (
@@ -53,4 +53,6 @@ export default function PostMetaInfo({
 			)}
 		</ThemeConsumer>
 	);
-}
+};
+
+export default PostMetaInfo;

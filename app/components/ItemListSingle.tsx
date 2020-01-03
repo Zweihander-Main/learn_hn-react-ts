@@ -1,34 +1,29 @@
 import * as React from 'react';
 import ItemMeta from './ItemMeta';
 
-interface ItemListSingleProps extends React.Props<ItemListSingle> {
+interface ItemListSingleProps {
 	item: HNItem;
 }
 
-export default class ItemListSingle extends React.Component<
-	ItemListSingleProps
-> {
-	constructor(props: ItemListSingleProps) {
-		super(props);
-	}
+const ItemListSingle: React.FC<ItemListSingleProps> = ({
+	item,
+}: ItemListSingleProps): JSX.Element => {
+	const { title, url, by, time, id, descendants } = item;
 
-	render(): JSX.Element {
-		const { item } = this.props;
-		const { title, url, by, time, id, descendants } = item;
+	return (
+		<li className="post">
+			<a className="link" href={url}>
+				{title}
+			</a>
+			<ItemMeta
+				by={by}
+				time={time}
+				descendants={descendants}
+				id={id}
+				item={item}
+			/>
+		</li>
+	);
+};
 
-		return (
-			<li className="post">
-				<a className="link" href={url}>
-					{title}
-				</a>
-				<ItemMeta
-					by={by}
-					time={time}
-					descendants={descendants}
-					id={id}
-					item={item}
-				/>
-			</li>
-		);
-	}
-}
+export default ItemListSingle;

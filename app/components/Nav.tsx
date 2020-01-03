@@ -6,7 +6,7 @@ const activeStyle = {
 	color: 'rgb(187,46,31)',
 };
 
-export default function Nav(): JSX.Element {
+const Nav: React.FC = (): JSX.Element => {
 	return (
 		<ThemeConsumer>
 			{({ theme, toggleTheme }: AppState): JSX.Element => (
@@ -79,4 +79,6 @@ export default function Nav(): JSX.Element {
 			)}
 		</ThemeConsumer>
 	);
-}
+};
+
+export default Nav;
