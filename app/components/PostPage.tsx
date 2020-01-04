@@ -40,6 +40,9 @@ export default class PostPage extends React.Component<
 
 			fetchItem(numId)
 				.then((post): void => {
+					if (post === null) {
+						throw { message: 'Post not found.' };
+					}
 					this.setState({ post, loadingPost: false });
 				})
 				.catch(({ message }: { message: string }): void =>
@@ -53,7 +56,11 @@ export default class PostPage extends React.Component<
 
 	render(): JSX.Element | JSX.Element[] {
 		const { post, loadingPost, error } = this.state;
-		const pageTitle = loadingPost === true ? 'Loading Post' : post.title;
+		const pageTitle = error
+			? error
+			: loadingPost === true
+			? 'Loading Post'
+			: post.title;
 		const titleJSX = (
 			<Helmet key={`title-${pageTitle}`}>
 				<title>{pageTitle}</title>

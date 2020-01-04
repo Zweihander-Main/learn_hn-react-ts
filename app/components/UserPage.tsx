@@ -39,8 +39,12 @@ export default class UserPage extends React.Component<
 		fetchUser(id as string)
 			.then(
 				(user): Promise<Array<HNItem>> => {
-					this.setState({ user, loadingUser: false });
-					return fetchPosts(user.submitted || []);
+					if (user === null) {
+						throw { message: 'User not found.' };
+					} else {
+						this.setState({ user, loadingUser: false });
+						return fetchPosts(user.submitted || []);
+					}
 				}
 			)
 			.then((posts): void =>
@@ -60,7 +64,11 @@ export default class UserPage extends React.Component<
 
 	render(): JSX.Element | JSX.Element[] {
 		const { user, posts, loadingUser, loadingPosts, error } = this.state;
-		const pageTitle = loadingUser === true ? 'Loading User' : user.id;
+		const pageTitle = error
+			? error
+			: loadingUser === true
+			? 'Loading User'
+			: user.id;
 		const titleJSX = (
 			<Helmet key={`title-${pageTitle}`}>
 				<title>{pageTitle}</title>
