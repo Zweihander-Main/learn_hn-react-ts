@@ -1,6 +1,6 @@
 # HN-React-TS
 
-> TypeScript implementation of Hacker News clone originally by (tylermcginnis)[https://github.com/tylermcginnis/] with some useful additions. (Live demo)[https://hn-react-ts.zweisolutions.com]
+> TypeScript implementation of Hacker News clone originally by [tylermcginnis](https://github.com/tylermcginnis/) with some useful additions. [Live demo](https://hn-react-ts.zweisolutions.com)
 
 ### Added features:
 
@@ -21,7 +21,7 @@
 
 ### Live demo:
 
-(Available at https://hn-react-ts.zweisolutions.com)[https://hn-react-ts.zweisolutions.com]
+[Available at hn-react-ts.zweisolutions.com](https://hn-react-ts.zweisolutions.com)
 
 ### Instructions
 
