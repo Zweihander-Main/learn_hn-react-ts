@@ -10,11 +10,11 @@ interface ItemListSingleProps {
  * Renders a single post in a list of posts
  *
  * @class      ItemListSingle
- * @return     {JSX.Element}
+ * @return     {React.ReactNode}
  */
 const ItemListSingle: React.FC<ItemListSingleProps> = ({
 	item,
-}: ItemListSingleProps): JSX.Element => {
+}: ItemListSingleProps) => {
 	const { title, url, by, time, id, descendants } = item;
 
 	return (

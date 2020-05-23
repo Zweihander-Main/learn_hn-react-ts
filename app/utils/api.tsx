@@ -39,8 +39,8 @@ function onlyPosts(posts: Array<HNItem>): Array<HNItem> {
  * @param      {number}  id      The identifier
  */
 export function fetchItem(id: number): Promise<HNItem> {
-	return fetch(`${api}/item/${id}${json}`).then((res: Response) =>
-		res.json()
+	return fetch(`${api}/item/${id}${json}`).then(
+		(res: Response) => res.json() as Promise<HNItem>
 	);
 }
 
@@ -98,8 +98,8 @@ export function fetchMainPosts(type: HNTypes): Promise<Array<HNItem>> {
  * @param      {string}  id      The identifier
  */
 export function fetchUser(id: string): Promise<HNUser> {
-	return fetch(`${api}/user/${id}${json}`).then((res: Response) =>
-		res.json()
+	return fetch(`${api}/user/${id}${json}`).then(
+		(res: Response) => res.json() as Promise<HNUser>
 	);
 }
 

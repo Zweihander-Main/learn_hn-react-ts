@@ -11,12 +11,12 @@ const activeStyle = {
  * theme switcher
  *
  * @class      Nav
- * @return     {JSX.Element}
+ * @return     {React.ReactNode}
  */
-const Nav: React.FC = (): JSX.Element => {
+const Nav: React.FC = () => {
 	return (
 		<ThemeConsumer>
-			{({ theme, toggleTheme }: AppState): JSX.Element => (
+			{({ theme, toggleTheme }: AppState): React.ReactNode => (
 				<nav className="row space-between">
 					<ul className="row nav">
 						<li>

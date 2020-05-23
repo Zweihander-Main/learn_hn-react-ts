@@ -1,0 +1,332 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Snapshots are matched for  App component 1`] = `
+<DocumentFragment>
+  <div
+    class="light"
+  >
+    <div
+      class="container"
+    >
+      <nav
+        class="row space-between"
+      >
+        <ul
+          class="row nav"
+        >
+          <li>
+            <a
+              aria-current="page"
+              class="nav-link active"
+              href="/"
+              style="color: rgb(187, 46, 31);"
+            >
+              Top
+            </a>
+          </li>
+          <li>
+            <a
+              class="nav-link"
+              href="/new"
+            >
+              New
+            </a>
+          </li>
+          <li>
+            <a
+              class="nav-link"
+              href="/best"
+            >
+              Best
+            </a>
+          </li>
+          <li>
+            <a
+              class="nav-link"
+              href="/ask"
+            >
+              Ask
+            </a>
+          </li>
+          <li>
+            <a
+              class="nav-link"
+              href="/show"
+            >
+              Show
+            </a>
+          </li>
+          <li>
+            <a
+              class="nav-link"
+              href="/job"
+            >
+              Job
+            </a>
+          </li>
+        </ul>
+        <button
+          class="btn-clear"
+          style="font-size: 30px;"
+        >
+          🔦
+        </button>
+      </nav>
+      <p
+        style="font-size: 35px; margin-top: 20px; text-align: center;"
+      >
+        Loading
+      </p>
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`Snapshots are matched for  Comment component 1`] = `
+<DocumentFragment>
+  <div
+    class="comment"
+    style="margin-left: 0px;"
+  >
+    <a
+      class="toggleCollapse toggle-light"
+      href="#"
+    >
+      [-]
+    </a>
+    <div
+      class="meta-info-light"
+    >
+      <span>
+        by 
+        <a
+          href="/user?id="
+        />
+      </span>
+      <span>
+        on 12/31/1969, 7:00 PM
+      </span>
+    </div>
+    <p />
+  </div>
+</DocumentFragment>
+`;
+
+exports[`Snapshots are matched for  CommentTree component 1`] = `
+<DocumentFragment>
+  <p
+    style="font-size: 35px; margin-top: 20px; text-align: center;"
+  >
+    Loading comment
+  </p>
+</DocumentFragment>
+`;
+
+exports[`Snapshots are matched for  ItemList component 1`] = `
+<DocumentFragment>
+  <ul>
+    <div
+      class="infinite-scroll-component__outerdiv"
+    >
+      <div
+        class="infinite-scroll-component "
+        style="height: auto; overflow: auto;"
+      >
+        <li
+          class="post"
+        >
+          <a
+            class="link"
+          />
+          <div
+            class="meta-info-light"
+          >
+            <span>
+              by 
+              <a
+                href="/user?id="
+              />
+            </span>
+            <span>
+              on 12/31/1969, 7:00 PM
+            </span>
+          </div>
+        </li>
+      </div>
+    </div>
+  </ul>
+</DocumentFragment>
+`;
+
+exports[`Snapshots are matched for  ItemListSingle component 1`] = `
+<DocumentFragment>
+  <li
+    class="post"
+  >
+    <a
+      class="link"
+    />
+    <div
+      class="meta-info-light"
+    >
+      <span>
+        by 
+        <a
+          href="/user?id="
+        />
+      </span>
+      <span>
+        on 12/31/1969, 7:00 PM
+      </span>
+    </div>
+  </li>
+</DocumentFragment>
+`;
+
+exports[`Snapshots are matched for  ItemsPage component 1`] = `
+<DocumentFragment>
+  <p
+    style="font-size: 35px; margin-top: 20px; text-align: center;"
+  >
+    Loading
+  </p>
+</DocumentFragment>
+`;
+
+exports[`Snapshots are matched for  Loading component 1`] = `
+<DocumentFragment>
+  <p
+    style="font-size: 35px; margin-top: 20px; text-align: center;"
+  >
+    Loading
+  </p>
+</DocumentFragment>
+`;
+
+exports[`Snapshots are matched for  Nav component 1`] = `
+<DocumentFragment>
+  <nav
+    class="row space-between"
+  >
+    <ul
+      class="row nav"
+    >
+      <li>
+        <a
+          aria-current="page"
+          class="nav-link active"
+          href="/"
+          style="color: rgb(187, 46, 31);"
+        >
+          Top
+        </a>
+      </li>
+      <li>
+        <a
+          class="nav-link"
+          href="/new"
+        >
+          New
+        </a>
+      </li>
+      <li>
+        <a
+          class="nav-link"
+          href="/best"
+        >
+          Best
+        </a>
+      </li>
+      <li>
+        <a
+          class="nav-link"
+          href="/ask"
+        >
+          Ask
+        </a>
+      </li>
+      <li>
+        <a
+          class="nav-link"
+          href="/show"
+        >
+          Show
+        </a>
+      </li>
+      <li>
+        <a
+          class="nav-link"
+          href="/job"
+        >
+          Job
+        </a>
+      </li>
+    </ul>
+    <button
+      class="btn-clear"
+      style="font-size: 30px;"
+    >
+      🔦
+    </button>
+  </nav>
+</DocumentFragment>
+`;
+
+exports[`Snapshots are matched for  PostMetaInfo component 1`] = `
+<DocumentFragment>
+  <div
+    class="meta-info-light"
+  >
+    <span>
+      by 
+      <a
+        href="/user?id="
+      />
+    </span>
+    <span>
+      on 12/31/1969, 7:00 PM
+    </span>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`Snapshots are matched for  PostPage component 1`] = `
+<DocumentFragment>
+  <h1
+    class="header"
+  >
+    <a
+      class="link"
+    />
+  </h1>
+  <div
+    class="meta-info-light"
+  >
+    <span>
+      by 
+      <a
+        href="/user?id="
+      />
+    </span>
+    <span>
+      on 12/31/1969, 7:00 PM
+    </span>
+  </div>
+  <p />
+  <p
+    style="font-size: 35px; margin-top: 20px; text-align: center;"
+  >
+    Loading comment
+  </p>
+</DocumentFragment>
+`;
+
+exports[`Snapshots are matched for  UserPage component 1`] = `
+<DocumentFragment>
+  <p
+    style="font-size: 35px; margin-top: 20px; text-align: center;"
+  >
+    Fetching User
+  </p>
+</DocumentFragment>
+`;

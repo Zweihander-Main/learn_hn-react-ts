@@ -17,7 +17,7 @@ interface ItemMetaProps {
  * Renders meta information for a given post or comment
  *
  * @class      PostMetaInfo
- * @return     {JSX.Element}
+ * @return     {React.ReactNode}
  */
 const PostMetaInfo: React.FC<ItemMetaProps> = ({
 	by,
@@ -25,10 +25,10 @@ const PostMetaInfo: React.FC<ItemMetaProps> = ({
 	id,
 	descendants,
 	item,
-}: ItemMetaProps): JSX.Element => {
+}: ItemMetaProps) => {
 	return (
 		<ThemeConsumer>
-			{({ theme }: AppState): JSX.Element => (
+			{({ theme }: AppState): React.ReactNode => (
 				<div className={`meta-info-${theme}`}>
 					<span>
 						by <Link to={`/user?id=${by}`}>{by}</Link>

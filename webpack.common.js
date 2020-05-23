@@ -42,7 +42,9 @@ module.exports = {
 	},
 	plugins: [
 		new CleanWebpackPlugin(),
-		new CopyPlugin([{ from: '_redirects' }]),
+		new CopyPlugin({
+			patterns: [{ from: '_redirects' }],
+		}),
 		new HtmlWebpackPlugin({
 			template: 'app/index.html',
 		}),

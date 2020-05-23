@@ -31,4 +31,3 @@ interface AppState {
 	theme: 'light' | 'dark';
 	toggleTheme: () => void;
 }
-

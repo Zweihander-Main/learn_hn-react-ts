@@ -1,11 +1,11 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 
-const styles = {
+const styles: { content: React.CSSProperties } = {
 	content: {
 		fontSize: '35px',
 		marginTop: '20px',
-		textAlign: 'center' as 'center',
+		textAlign: 'center',
 	},
 };
 
@@ -38,7 +38,7 @@ export default class Loading extends React.Component<
 	};
 
 	interval: number;
-	state = {
+	state: LoadingState = {
 		content: this.props.text,
 	};
 
@@ -60,7 +60,7 @@ export default class Loading extends React.Component<
 		window.clearInterval(this.interval);
 	}
 
-	render(): JSX.Element {
+	render(): React.ReactNode {
 		return <p style={styles.content}>{this.state.content}</p>;
 	}
 }

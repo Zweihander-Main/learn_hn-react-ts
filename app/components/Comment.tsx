@@ -15,19 +15,19 @@ interface CommentProps {
  * Renders a single comment including collapse button
  *
  * @class      Comment
- * @return     {JSX.Element}
+ * @return     {React.ReactNode}
  */
 const Comment: React.FC<CommentProps> = ({
 	comment,
 	depth,
 	toggleCollapse,
 	collapsed,
-}: CommentProps): JSX.Element => {
+}: CommentProps) => {
 	const { id, by, time, text } = comment;
 
 	return (
 		<ThemeConsumer>
-			{({ theme }: AppState): JSX.Element => (
+			{({ theme }: AppState): React.ReactNode => (
 				<div style={{ marginLeft: 40 * depth }} className="comment">
 					<a
 						className={`toggleCollapse toggle-${theme}`}

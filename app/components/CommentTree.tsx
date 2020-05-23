@@ -41,7 +41,7 @@ export default class CommentTree extends React.Component<
 		depth: PropTypes.number.isRequired,
 	};
 
-	state = {
+	state: CommentTreeState = {
 		comments: [],
 		loading: true,
 		hasMore: false,
@@ -104,7 +104,7 @@ export default class CommentTree extends React.Component<
 		}));
 	};
 
-	render(): JSX.Element {
+	render(): React.ReactNode {
 		const {
 			loadedComments,
 			loading,

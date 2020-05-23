@@ -3,7 +3,7 @@ import { HNTypes as propTypesHNTypes } from '../globals.PropTypes';
 import ItemList from './ItemList';
 import Loading from './Loading';
 import { fetchMainPosts } from '../utils/api';
-import Helmet from 'react-helmet';
+import { Helmet } from 'react-helmet';
 
 interface ItemsPageProps extends React.Props<ItemsPage> {
 	type: HNTypes;
@@ -29,7 +29,7 @@ export default class ItemsPage extends React.Component<
 		type: propTypesHNTypes.isRequired,
 	};
 
-	state = {
+	state: ItemsPageState = {
 		items: null,
 		error: null,
 		loading: true,
@@ -39,7 +39,7 @@ export default class ItemsPage extends React.Component<
 		this.handleFetch();
 	}
 
-	componentDidUpdate(prevProps): void {
+	componentDidUpdate(prevProps: ItemsPageProps): void {
 		if (prevProps.type !== this.props.type) {
 			this.handleFetch();
 		}
@@ -66,12 +66,13 @@ export default class ItemsPage extends React.Component<
 			);
 	};
 
-	render(): JSX.Element | JSX.Element[] {
+	render(): React.ReactNode | React.ReactNode[] {
 		const { items, error, loading } = this.state;
 		const { type } = this.props;
 
-		const title = `${type[0].toUpperCase() +
-			type.slice(1).toLowerCase()} Stories`;
+		const title = `${
+			type[0].toUpperCase() + type.slice(1).toLowerCase()
+		} Stories`;
 		const titleJSX = (
 			<Helmet key={`title-${title}`}>
 				<title>{title}</title>

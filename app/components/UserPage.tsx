@@ -2,7 +2,7 @@ import * as React from 'react';
 import { fetchUser, fetchPosts } from '../utils/api';
 import { RouteComponentProps } from 'react-router-dom';
 import queryString from 'query-string';
-import Helmet from 'react-helmet';
+import { Helmet } from 'react-helmet';
 import { formatDate } from '../utils/helpers';
 import ItemList from './ItemList';
 import Loading from './Loading';
@@ -25,7 +25,7 @@ export default class UserPage extends React.Component<
 	RouteComponentProps,
 	UserPageState
 > {
-	state = {
+	state: UserPageState = {
 		user: null,
 		posts: null,
 		loadingUser: true,
@@ -62,7 +62,7 @@ export default class UserPage extends React.Component<
 			);
 	}
 
-	render(): JSX.Element | JSX.Element[] {
+	render(): React.ReactNode | React.ReactNode[] {
 		const { user, posts, loadingUser, loadingPosts, error } = this.state;
 		const pageTitle = error
 			? error

@@ -29,6 +29,7 @@ export default class ItemList extends React.Component<
 	static propTypes = {
 		item: PropTypes.arrayOf(propTypesHNItem),
 	};
+	state: ItemListState;
 
 	constructor(props: ItemListProps) {
 		super(props);
@@ -63,7 +64,7 @@ export default class ItemList extends React.Component<
 		);
 	};
 
-	render(): JSX.Element {
+	render(): React.ReactNode {
 		const { hasMore, loadedItems } = this.state;
 
 		return (

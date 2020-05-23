@@ -5,13 +5,17 @@ import ItemMeta from './ItemMeta';
 import Loading from './Loading';
 import CommentTree from './CommentTree';
 import { RouteComponentProps } from 'react-router-dom';
-import Helmet from 'react-helmet';
+import { Helmet } from 'react-helmet';
 
 interface PostPageState {
 	post: HNItem;
 	loadingPost: boolean;
 	error: string;
 }
+
+type PostPageProps = RouteComponentProps & {
+	location: { state: { item?: HNItem } };
+};
 
 /**
  * Creates the listing of a single post including post information and comment
@@ -20,10 +24,10 @@ interface PostPageState {
  * @class      PostPage
  */
 export default class PostPage extends React.Component<
-	RouteComponentProps,
+	PostPageProps,
 	PostPageState
 > {
-	state = {
+	state: PostPageState = {
 		post: null,
 		loadingPost: true,
 		error: null,
@@ -54,7 +58,7 @@ export default class PostPage extends React.Component<
 		}
 	}
 
-	render(): JSX.Element | JSX.Element[] {
+	render(): React.ReactNode | React.ReactNode[] {
 		const { post, loadingPost, error } = this.state;
 		const pageTitle = error
 			? error
