@@ -14,57 +14,53 @@ const UserPage = React.lazy(() => import('./components/UserPage'));
 /**
  * Sets up application including meta information, theme context, and routing
  *
- * @class      App (name)
  */
-export default class App extends React.Component<Record<null, null>, AppState> {
-	state: AppState = {
-		theme: 'light',
-		toggleTheme: (): void => {
-			this.setState(({ theme }: AppState) => ({
-				theme: theme === 'light' ? 'dark' : 'light',
-			}));
-		},
+const App: React.FC = () => {
+	const [theme, setTheme] = React.useState<AppState>('light');
+
+	const toggleTheme = (): void => {
+		setTheme((theme) => (theme === 'light' ? 'dark' : 'light'));
 	};
 
-	render(): React.ReactNode {
-		return (
-			<Router>
-				<Helmet defaultTitle="HackerNews" titleTemplate="HN - %s" />
-				<ThemeProvider value={this.state}>
-					<div className={this.state.theme}>
-						<div className="container">
-							<Nav />
-							<React.Suspense fallback={<Loading />}>
-								<Switch>
-									<Route exact path="/">
-										<ItemsPage type="top" />
-									</Route>
-									<Route path="/new">
-										<ItemsPage type="new" />
-									</Route>
-									<Route path="/best">
-										<ItemsPage type="best" />
-									</Route>
-									<Route path="/ask">
-										<ItemsPage type="ask" />
-									</Route>
-									<Route path="/show">
-										<ItemsPage type="show" />
-									</Route>
-									<Route path="/job">
-										<ItemsPage type="job" />
-									</Route>
-									<Route path="/post" component={PostPage} />
-									<Route path="/user" component={UserPage} />
-									<Route>
-										<h1>404</h1>
-									</Route>
-								</Switch>
-							</React.Suspense>
-						</div>
+	return (
+		<Router>
+			<Helmet defaultTitle="HackerNews" titleTemplate="HN - %s" />
+			<ThemeProvider value={theme}>
+				<div className={theme}>
+					<div className="container">
+						<Nav toggleTheme={toggleTheme} />
+						<React.Suspense fallback={<Loading />}>
+							<Switch>
+								<Route exact path="/">
+									<ItemsPage type="top" />
+								</Route>
+								<Route path="/new">
+									<ItemsPage type="new" />
+								</Route>
+								<Route path="/best">
+									<ItemsPage type="best" />
+								</Route>
+								<Route path="/ask">
+									<ItemsPage type="ask" />
+								</Route>
+								<Route path="/show">
+									<ItemsPage type="show" />
+								</Route>
+								<Route path="/job">
+									<ItemsPage type="job" />
+								</Route>
+								<Route path="/post" component={PostPage} />
+								<Route path="/user" component={UserPage} />
+								<Route>
+									<h1>404</h1>
+								</Route>
+							</Switch>
+						</React.Suspense>
 					</div>
-				</ThemeProvider>
-			</Router>
-		);
-	}
-}
+				</div>
+			</ThemeProvider>
+		</Router>
+	);
+};
+
+export default App;

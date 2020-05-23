@@ -9,58 +9,36 @@ const styles: { content: React.CSSProperties } = {
 	},
 };
 
-interface LoadingProps extends React.Props<Loading> {
+interface LoadingProps {
 	text?: string;
 	speed?: number;
 }
 
-interface LoadingState {
-	content: string;
-}
-
 /**
  * Renders a loading text element for use with API fetching
- *
- * @class      Loading
  */
-export default class Loading extends React.Component<
-	LoadingProps,
-	LoadingState
-> {
-	static propTypes = {
-		text: PropTypes.string.isRequired,
-		speed: PropTypes.number.isRequired,
-	};
+const Loading: React.FC<LoadingProps> = ({
+	text = 'Loading',
+	speed = 300,
+}: LoadingProps) => {
+	const [content, setContent] = React.useState(text);
 
-	static defaultProps = {
-		text: 'Loading',
-		speed: 300,
-	};
-
-	interval: number;
-	state: LoadingState = {
-		content: this.props.text,
-	};
-
-	componentDidMount(): void {
-		const { speed, text } = this.props;
-
-		this.interval = window.setInterval((): void => {
-			this.state.content === text + '...'
-				? this.setState({ content: text })
-				: this.setState(
-						({ content }: LoadingState): LoadingState => ({
-							content: content + '.',
-						})
-				  );
+	React.useEffect(() => {
+		const id = window.setInterval((): void => {
+			setContent((content) => {
+				return content === `${text}...` ? text : `${content}.`;
+			});
 		}, speed);
-	}
 
-	componentWillUnmount(): void {
-		window.clearInterval(this.interval);
-	}
+		return () => window.clearInterval(id);
+	}, [text, speed]);
 
-	render(): React.ReactNode {
-		return <p style={styles.content}>{this.state.content}</p>;
-	}
-}
+	return <p style={styles.content}>{content}</p>;
+};
+
+Loading.propTypes = {
+	text: PropTypes.string,
+	speed: PropTypes.number,
+};
+
+export default Loading;

@@ -1,9 +1,8 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import { HNItemPT as propTypesHNItem, HNItem, AppState } from '../types';
-
+import { HNItemPT as propTypesHNItem, HNItem } from '../types';
 import ItemMeta from './ItemMeta';
-import { ThemeConsumer } from '../contexts/theme';
+import ThemeContext from '../contexts/theme';
 
 interface CommentProps {
 	comment: HNItem;
@@ -26,30 +25,28 @@ const Comment: React.FC<CommentProps> = ({
 }: CommentProps) => {
 	const { id, by, time, text } = comment;
 
+	const theme = React.useContext(ThemeContext);
+
 	return (
-		<ThemeConsumer>
-			{({ theme }: AppState): React.ReactNode => (
-				<div style={{ marginLeft: 40 * depth }} className="comment">
-					<a
-						className={`toggleCollapse toggle-${theme}`}
-						href="#"
-						onClick={toggleCollapse}
-					>
-						[{collapsed === true ? '+' : '-'}]
-					</a>
-					{collapsed !== true && (
-						<React.Fragment>
-							<ItemMeta by={by} time={time} id={id} />
-							<p
-								dangerouslySetInnerHTML={{
-									__html: text,
-								}}
-							/>
-						</React.Fragment>
-					)}
-				</div>
+		<div style={{ marginLeft: 40 * depth }} className="comment">
+			<a
+				className={`toggleCollapse toggle-${theme}`}
+				href="#"
+				onClick={toggleCollapse}
+			>
+				[{collapsed === true ? '+' : '-'}]
+			</a>
+			{collapsed !== true && (
+				<React.Fragment>
+					<ItemMeta by={by} time={time} id={id} />
+					<p
+						dangerouslySetInnerHTML={{
+							__html: text,
+						}}
+					/>
+				</React.Fragment>
 			)}
-		</ThemeConsumer>
+		</div>
 	);
 };
 

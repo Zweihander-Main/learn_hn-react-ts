@@ -2,8 +2,8 @@ import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { formatDate } from '../utils/helpers';
-import { ThemeConsumer } from '../contexts/theme';
-import { HNItemPT as propTypesHNItem, HNItem, AppState } from '../types';
+import ThemeContext from '../contexts/theme';
+import { HNItemPT as propTypesHNItem, HNItem } from '../types';
 
 interface ItemMetaProps {
 	by: string;
@@ -26,40 +26,36 @@ const PostMetaInfo: React.FC<ItemMetaProps> = ({
 	descendants,
 	item,
 }: ItemMetaProps) => {
+	const theme = React.useContext(ThemeContext);
+
 	return (
-		<ThemeConsumer>
-			{({ theme }: AppState): React.ReactNode => (
-				<div className={`meta-info-${theme}`}>
-					<span>
-						by <Link to={`/user?id=${by}`}>{by}</Link>
-					</span>
-					<span>on {formatDate(time)}</span>
-					{typeof descendants === 'number' && (
-						<span>
-							with{' '}
-							<Link
-								to={{
-									pathname: '/post',
-									search: `?id=${id}`,
-									state: {
-										item: item,
-									},
-								}}
-							>
-								{descendants}
-							</Link>{' '}
-							comments [
-							<a
-								href={`https://news.ycombinator.com/item?id=${id}`}
-							>
-								hn
-							</a>
-							]
-						</span>
-					)}
-				</div>
+		<div className={`meta-info-${theme}`}>
+			<span>
+				by <Link to={`/user?id=${by}`}>{by}</Link>
+			</span>
+			<span>on {formatDate(time)}</span>
+			{typeof descendants === 'number' && (
+				<span>
+					with{' '}
+					<Link
+						to={{
+							pathname: '/post',
+							search: `?id=${id}`,
+							state: {
+								item: item,
+							},
+						}}
+					>
+						{descendants}
+					</Link>{' '}
+					comments [
+					<a href={`https://news.ycombinator.com/item?id=${id}`}>
+						hn
+					</a>
+					]
+				</span>
 			)}
-		</ThemeConsumer>
+		</div>
 	);
 };
 

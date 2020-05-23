@@ -29,10 +29,7 @@ export interface HNUser {
 
 export type HNTypes = 'top' | 'new' | 'best' | 'ask' | 'show' | 'job';
 
-export interface AppState {
-	theme: 'light' | 'dark';
-	toggleTheme: () => void;
-}
+export type AppState = 'light' | 'dark';
 
 export const HNItemPT = PropTypes.exact({
 	id: PropTypes.number.isRequired,
