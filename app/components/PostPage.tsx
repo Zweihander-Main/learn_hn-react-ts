@@ -6,6 +6,7 @@ import Loading from './Loading';
 import CommentTree from './CommentTree';
 import { RouteComponentProps } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
+import { HNItem } from '../types';
 
 interface PostPageState {
 	post: HNItem;

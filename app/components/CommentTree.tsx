@@ -1,10 +1,10 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import { HNItem as propTypesHNItem } from '../globals.PropTypes';
 import { fetchComments } from '../utils/api';
 import Loading from './Loading';
 import Comment from './Comment';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import { HNItemPT as propTypesHNItem, HNItem } from '../types';
 
 interface CommentTreeProps extends React.Props<CommentTree> {
 	parent: HNItem;

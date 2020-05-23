@@ -1,9 +1,11 @@
 import * as React from 'react';
-// import { AppState } from '../types';
+import { AppState } from '../types';
 
 const ThemeContext = React.createContext<AppState>({
 	theme: 'light',
-	toggleTheme: () => {},
+	toggleTheme: () => {
+		null;
+	},
 });
 
 export default ThemeContext;

@@ -1,9 +1,9 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import { HNItem as propTypesHNItem } from '../globals.PropTypes';
 import { Link } from 'react-router-dom';
 import { formatDate } from '../utils/helpers';
 import { ThemeConsumer } from '../contexts/theme';
+import { HNItemPT as propTypesHNItem, HNItem, AppState } from '../types';
 
 interface ItemMetaProps {
 	by: string;

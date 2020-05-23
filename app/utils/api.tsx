@@ -1,3 +1,5 @@
+import { HNItem, HNUser, HNTypes } from '../types';
+
 const api = 'https://hacker-news.firebaseio.com/v0';
 const json = '.json';
 

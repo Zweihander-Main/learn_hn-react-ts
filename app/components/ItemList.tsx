@@ -1,9 +1,9 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import { HNItem as propTypesHNItem } from '../globals.PropTypes';
 import ItemListSingle from './ItemListSingle';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import Loading from './Loading';
+import { HNItemPT as propTypesHNItem, HNItem } from '../types';
 
 interface ItemListProps extends React.Props<ItemList> {
 	items?: Array<HNItem>;

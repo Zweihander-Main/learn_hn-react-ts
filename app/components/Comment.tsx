@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import { HNItem as propTypesHNItem } from '../globals.PropTypes';
+import { HNItemPT as propTypesHNItem, HNItem, AppState } from '../types';
+
 import ItemMeta from './ItemMeta';
 import { ThemeConsumer } from '../contexts/theme';
 

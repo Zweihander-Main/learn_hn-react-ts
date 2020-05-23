@@ -6,6 +6,7 @@ import { Helmet } from 'react-helmet';
 import { formatDate } from '../utils/helpers';
 import ItemList from './ItemList';
 import Loading from './Loading';
+import { HNItem, HNUser } from '../types';
 
 interface UserPageState {
 	user: HNUser;

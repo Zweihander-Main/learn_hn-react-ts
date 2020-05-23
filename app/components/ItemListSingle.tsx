@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { HNItem as propTypesHNItem } from '../globals.PropTypes';
 import ItemMeta from './ItemMeta';
+import { HNItemPT as propTypesHNItem, HNItem } from '../types';
 
 interface ItemListSingleProps {
 	item: HNItem;

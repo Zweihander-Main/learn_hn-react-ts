@@ -5,6 +5,7 @@ import { Helmet } from 'react-helmet';
 import './index.css';
 import Nav from './components/Nav';
 import Loading from './components/Loading';
+import { AppState } from './types';
 
 const ItemsPage = React.lazy(() => import('./components/ItemsPage'));
 const PostPage = React.lazy(() => import('./components/PostPage'));

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { ThemeConsumer } from '../contexts/theme';
 import { NavLink } from 'react-router-dom';
+import { AppState } from '../types';
 
 const activeStyle = {
 	color: 'rgb(187,46,31)',

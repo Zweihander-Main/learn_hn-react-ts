@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { HNTypes as propTypesHNTypes } from '../globals.PropTypes';
 import ItemList from './ItemList';
 import Loading from './Loading';
 import { fetchMainPosts } from '../utils/api';
 import { Helmet } from 'react-helmet';
+import { HNTypesPT as propTypesHNTypes, HNItem, HNTypes } from '../types';
 
 interface ItemsPageProps extends React.Props<ItemsPage> {
 	type: HNTypes;
