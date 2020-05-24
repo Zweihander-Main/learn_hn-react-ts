@@ -8,7 +8,7 @@ import { RouteComponentProps } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import { HNItem } from '../types';
 
-interface PostPageState {
+interface PostPageReducerState {
 	post: HNItem;
 	loadingPost: boolean;
 	error: string;
@@ -18,29 +18,58 @@ type PostPageProps = RouteComponentProps & {
 	location: { state: { item?: HNItem } };
 };
 
+type PostPageReducerActions =
+	| { type: 'setFromProp'; post: HNItem }
+	| { type: 'success'; post: HNItem }
+	| { type: 'error'; message: string };
+
+function postPageReducer(
+	state: PostPageReducerState,
+	action: PostPageReducerActions
+): PostPageReducerState {
+	switch (action.type) {
+		case 'setFromProp': {
+			return {
+				...state,
+				post: action.post,
+				loadingPost: false,
+			};
+		}
+		case 'success': {
+			return {
+				...state,
+				post: action.post,
+				loadingPost: false,
+			};
+		}
+		case 'error': {
+			return {
+				...state,
+				error: action.message,
+				loadingPost: false,
+			};
+		}
+	}
+}
+
 /**
  * Creates the listing of a single post including post information and comment
  * tree
- *
- * @class      PostPage
  */
-export default class PostPage extends React.Component<
-	PostPageProps,
-	PostPageState
-> {
-	state: PostPageState = {
+const PostPage: React.FC<PostPageProps> = ({ location }: PostPageProps) => {
+	const [state, dispatch] = React.useReducer(postPageReducer, {
 		post: null,
 		loadingPost: true,
 		error: null,
-	};
+	});
 
-	componentDidMount(): void {
-		const item = this.props.location.state?.item;
+	React.useEffect(() => {
+		const item = location.state?.item;
 
 		if (item) {
-			this.setState({ post: item, loadingPost: false });
+			dispatch({ type: 'setFromProp', post: item });
 		} else {
-			const { id } = queryString.parse(this.props.location.search);
+			const { id } = queryString.parse(location.search);
 			const numId = parseInt(id as string, 10);
 
 			fetchItem(numId)
@@ -48,62 +77,66 @@ export default class PostPage extends React.Component<
 					if (post === null) {
 						throw { message: 'Post not found.' };
 					}
-					this.setState({ post, loadingPost: false });
+					dispatch({ type: 'success', post });
 				})
 				.catch(({ message }: { message: string }): void =>
-					this.setState({
-						error: message,
-						loadingPost: false,
-					})
+					dispatch({ type: 'error', message })
 				);
 		}
+	}, [location]);
+
+	const pageTitle = state.error
+		? state.error
+		: state.loadingPost === true
+		? 'Loading Post'
+		: state.post.title;
+
+	const titleJSX = (
+		<Helmet key={`title-${pageTitle}`}>
+			<title>{pageTitle}</title>
+		</Helmet>
+	);
+
+	if (state.error) {
+		return (
+			<React.Fragment>
+				{titleJSX}
+				<p key={`error-${pageTitle}`} className="center-text error">
+					{state.error}
+				</p>
+			</React.Fragment>
+		);
 	}
 
-	render(): React.ReactNode | React.ReactNode[] {
-		const { post, loadingPost, error } = this.state;
-		const pageTitle = error
-			? error
-			: loadingPost === true
-			? 'Loading Post'
-			: post.title;
-		const titleJSX = (
-			<Helmet key={`title-${pageTitle}`}>
-				<title>{pageTitle}</title>
-			</Helmet>
-		);
-
-		if (error) {
-			return [
-				titleJSX,
-				<p key={`error-${pageTitle}`} className="center-text error">
-					{error}
-				</p>,
-			];
-		}
-
-		return [
-			titleJSX,
+	return (
+		<React.Fragment>
+			{titleJSX}
 			<React.Fragment key={`post-${pageTitle}`}>
-				{loadingPost === true ? (
+				{state.loadingPost === true ? (
 					<Loading text="Fetching post" />
 				) : (
 					<React.Fragment>
 						<h1 className="header">
-							<a className="link" href={post.url}>
-								{post.title}
+							<a className="link" href={state.post.url}>
+								{state.post.title}
 							</a>
 						</h1>
 						<ItemMeta
-							by={post.by}
-							time={post.time}
-							id={post.id}
-							descendants={post.descendants}
+							by={state.post.by}
+							time={state.post.time}
+							id={state.post.id}
+							descendants={state.post.descendants}
 						/>
-						<p dangerouslySetInnerHTML={{ __html: post.text }} />
-						<CommentTree parent={post} />
+						<p
+							dangerouslySetInnerHTML={{
+								__html: state.post.text,
+							}}
+						/>
+						<CommentTree parent={state.post} />
 					</React.Fragment>
 				)}
-			</React.Fragment>,
-		];
-	}
-}
+			</React.Fragment>
+		</React.Fragment>
+	);
+};
+export default PostPage;

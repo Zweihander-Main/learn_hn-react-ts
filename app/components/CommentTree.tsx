@@ -6,12 +6,12 @@ import Comment from './Comment';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { HNItemPT as propTypesHNItem, HNItem } from '../types';
 
-interface CommentTreeProps extends React.Props<CommentTree> {
+interface CommentTreeProps {
 	parent: HNItem;
-	depth: number;
+	depth?: number;
 }
 
-interface CommentTreeState {
+interface CommentTreeReducerState {
 	comments: Array<HNItem>;
 	loading: boolean;
 	hasMore: boolean;
@@ -20,139 +20,147 @@ interface CommentTreeState {
 	collapsed: boolean;
 }
 
-const commentsToLoad = 5;
+const COMMENTS_TO_LOAD = 5;
+
+type CommentTreeReducerActions =
+	| { type: 'fetchCommentsSuccess'; comments: Array<HNItem> }
+	| { type: 'fetchCommentsFailure'; error: string }
+	| { type: 'addMorePosts' }
+	| { type: 'toggleCollapse' };
+
+function commentTreeReducer(
+	state: CommentTreeReducerState,
+	action: CommentTreeReducerActions
+): CommentTreeReducerState {
+	switch (action.type) {
+		case 'fetchCommentsSuccess': {
+			return {
+				...state,
+				comments: action.comments,
+				loading: false,
+				loadedComments: action.comments.slice(0, COMMENTS_TO_LOAD),
+				hasMore: action.comments.length > 0 ? true : false,
+			};
+		}
+		case 'fetchCommentsFailure': {
+			return {
+				...state,
+				error: action.error,
+				loading: false,
+				hasMore: false,
+			};
+		}
+		case 'addMorePosts': {
+			const {
+				loadedComments,
+				comments,
+				loading,
+				error,
+				collapsed,
+			} = state;
+			const newLength = loadedComments.length + COMMENTS_TO_LOAD;
+			const newComments = comments.slice(0, newLength);
+
+			return {
+				...state,
+				loadedComments: newComments,
+				hasMore: comments.length > newLength ? true : false,
+				comments,
+				loading,
+				error,
+				collapsed,
+			};
+		}
+		case 'toggleCollapse': {
+			return {
+				...state,
+				collapsed: !state.collapsed,
+			};
+		}
+	}
+}
 
 /**
  * Takes a parent post and recursively fetches and renders comments of that
  * parent, passing them function to toggle collapsed state
- *
- * @class      CommentTree
  */
-export default class CommentTree extends React.Component<
-	CommentTreeProps,
-	CommentTreeState
-> {
-	static defaultProps = {
-		depth: -1,
-	};
-
-	static propTypes = {
-		parent: propTypesHNItem.isRequired,
-		depth: PropTypes.number.isRequired,
-	};
-
-	state: CommentTreeState = {
+const CommentTree: React.FC<CommentTreeProps> = ({
+	parent,
+	depth = -1,
+}: CommentTreeProps) => {
+	const [state, dispatch] = React.useReducer(commentTreeReducer, {
 		comments: [],
 		loading: true,
 		hasMore: false,
 		loadedComments: [],
 		error: null,
 		collapsed: false,
-	};
+	});
 
-	componentDidMount(): void {
-		const { parent } = this.props;
-
+	React.useEffect(() => {
 		fetchComments(parent.kids || [])
 			.then((comments: Array<HNItem>): void =>
-				this.setState({
+				dispatch({
+					type: 'fetchCommentsSuccess',
 					comments,
-					loading: false,
-					loadedComments: comments.slice(0, commentsToLoad),
-					hasMore: comments.length > 0 ? true : false,
 				})
 			)
 			.catch(({ message }: { message: string }): void =>
-				this.setState({
+				dispatch({
+					type: 'fetchCommentsFailure',
 					error: message,
-					loading: false,
-					hasMore: false,
 				})
 			);
-	}
+	}, [parent]);
 
-	addMorePosts = (): void => {
-		this.setState(
-			(prevState: CommentTreeState): CommentTreeState => {
-				const {
-					loadedComments,
-					comments,
-					loading,
-					error,
-					collapsed,
-				} = prevState;
-				const newLength = loadedComments.length + commentsToLoad;
-				const newComments = comments.slice(0, newLength);
-
-				return {
-					loadedComments: newComments,
-					hasMore: comments.length > newLength ? true : false,
-					comments,
-					loading,
-					error,
-					collapsed,
-				};
-			}
-		);
-	};
-
-	toggleCollapse = (e: React.MouseEvent<HTMLElement>): void => {
+	const toggleCollapse = (e: React.MouseEvent<HTMLElement>): void => {
 		e.preventDefault();
-		this.setState((prevState) => ({
-			...prevState,
-			collapsed: !prevState.collapsed,
-		}));
+		dispatch({ type: 'toggleCollapse' });
 	};
 
-	render(): React.ReactNode {
-		const {
-			loadedComments,
-			loading,
-			hasMore,
-			error,
-			collapsed,
-		} = this.state;
-		const { parent, depth } = this.props;
-
-		if (error) {
-			return <p className="center-text error">{error}</p>;
-		}
-
-		return (
-			<React.Fragment>
-				{loading === true ? (
-					<Loading text="Loading comment" />
-				) : (
-					<React.Fragment>
-						{depth !== -1 && (
-							<Comment
-								comment={parent}
-								depth={depth}
-								toggleCollapse={this.toggleCollapse}
-								collapsed={collapsed}
-							/>
-						)}
-						{collapsed !== true && (
-							<InfiniteScroll
-								dataLength={loadedComments.length}
-								next={this.addMorePosts}
-								hasMore={hasMore}
-								loader={
-									<Loading text="Loading more comments" />
-								}
-							>
-								{loadedComments.map((comment: HNItem) => (
-									<CommentTree
-										key={comment.id}
-										parent={comment}
-										depth={depth + 1}
-									/>
-								))}
-							</InfiniteScroll>
-						)}
-					</React.Fragment>
-				)}
-			</React.Fragment>
-		);
+	if (state.error) {
+		return <p className="center-text error">{state.error}</p>;
 	}
-}
+
+	return (
+		<React.Fragment>
+			{state.loading === true ? (
+				<Loading text="Loading comment" />
+			) : (
+				<React.Fragment>
+					{depth !== -1 && (
+						<Comment
+							comment={parent}
+							depth={depth}
+							toggleCollapse={toggleCollapse}
+							collapsed={state.collapsed}
+						/>
+					)}
+					{state.collapsed !== true && (
+						<InfiniteScroll
+							dataLength={state.loadedComments.length}
+							next={() => dispatch({ type: 'addMorePosts' })}
+							hasMore={state.hasMore}
+							loader={<Loading text="Loading more comments" />}
+						>
+							{state.loadedComments.map((comment: HNItem) => (
+								<CommentTree
+									key={comment.id}
+									parent={comment}
+									depth={depth + 1}
+								/>
+							))}
+						</InfiniteScroll>
+					)}
+				</React.Fragment>
+			)}
+		</React.Fragment>
+	);
+};
+
+CommentTree.propTypes = {
+	parent: propTypesHNItem.isRequired,
+	depth: PropTypes.number,
+};
+
+export default CommentTree;

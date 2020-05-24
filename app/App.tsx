@@ -13,7 +13,6 @@ const UserPage = React.lazy(() => import('./components/UserPage'));
 
 /**
  * Sets up application including meta information, theme context, and routing
- *
  */
 const App: React.FC = () => {
 	const [theme, setTheme] = React.useState<AppState>('light');

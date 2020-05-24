@@ -12,7 +12,7 @@ import Nav from '../components/Nav';
 import PostPage from '../components/PostPage';
 import UserPage from '../components/UserPage';
 
-import { render } from '@testing-library/react';
+import { render, act } from '@testing-library/react';
 
 const testComment = { id: 0, by: '', time: 0 };
 
@@ -59,14 +59,17 @@ declare const global: CustomNodeJsGlobal;
 describe('Snapshots are matched for ', () => {
 	global.fetch = jest.fn(() => Promise.resolve());
 	ComponentsArray.forEach((ComponentObject) => {
-		it(`${ComponentObject.component.name} component`, () => {
+		it(`${ComponentObject.component.name} component`, async () => {
 			const { component: Comp, attrs } = ComponentObject;
-			const { asFragment } = render(
-				<Router>
-					<Comp {...attrs} />
-				</Router>
-			);
-			expect(asFragment()).toMatchSnapshot();
+			await act(async () => {
+				const { asFragment } = render(
+					<Router>
+						<Comp {...attrs} />
+					</Router>
+				);
+				await Promise.resolve();
+				expect(asFragment()).toMatchSnapshot();
+			});
 		});
 	});
 });

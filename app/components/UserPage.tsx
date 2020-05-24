@@ -8,7 +8,7 @@ import ItemList from './ItemList';
 import Loading from './Loading';
 import { HNItem, HNUser } from '../types';
 
-interface UserPageState {
+interface UserPageReducerState {
 	user: HNUser;
 	posts: Array<HNItem>;
 	loadingUser: boolean;
@@ -16,26 +16,50 @@ interface UserPageState {
 	error: string;
 }
 
+type UserPageReducerActions =
+	| { type: 'successUser'; user: HNUser }
+	| { type: 'successPosts'; posts: Array<HNItem> }
+	| { type: 'error'; message: string };
+
+function userPageReducer(
+	state: UserPageReducerState,
+	action: UserPageReducerActions
+): UserPageReducerState {
+	switch (action.type) {
+		case 'successUser': {
+			return { ...state, user: action.user, loadingUser: false };
+		}
+		case 'successPosts': {
+			return { ...state, posts: action.posts, loadingPosts: false };
+		}
+		case 'error': {
+			return {
+				...state,
+				error: action.message,
+				loadingPosts: false,
+				loadingUser: false,
+			};
+		}
+	}
+}
+
 /**
  * Creates the listing page for a single user including user info and listing of
  * user submitted posts
- *
- * @class      UserPage (name)
  */
-export default class UserPage extends React.Component<
-	RouteComponentProps,
-	UserPageState
-> {
-	state: UserPageState = {
+const UserPage: React.FC<RouteComponentProps> = ({
+	location,
+}: RouteComponentProps) => {
+	const [state, dispatch] = React.useReducer(userPageReducer, {
 		user: null,
 		posts: null,
 		loadingUser: true,
 		loadingPosts: true,
 		error: null,
-	};
+	});
 
-	componentDidMount(): void {
-		const { id } = queryString.parse(this.props.location.search);
+	React.useEffect(() => {
+		const { id } = queryString.parse(location.search);
 
 		fetchUser(id as string)
 			.then(
@@ -43,76 +67,77 @@ export default class UserPage extends React.Component<
 					if (user === null) {
 						throw { message: 'User not found.' };
 					} else {
-						this.setState({ user, loadingUser: false });
+						dispatch({ type: 'successUser', user });
 						return fetchPosts(user.submitted || []);
 					}
 				}
 			)
-			.then((posts): void =>
-				this.setState({
-					posts,
-					loadingPosts: false,
-				})
-			)
+			.then((posts): void => dispatch({ type: 'successPosts', posts }))
 			.catch(({ message }: { message: string }): void =>
-				this.setState({
-					error: message,
-					loadingUser: false,
-					loadingPosts: false,
-				})
+				dispatch({ type: 'error', message })
 			);
+	}, [location]);
+
+	const pageTitle = state.error
+		? state.error
+		: state.loadingUser === true
+		? 'Loading User'
+		: state.user.id;
+	const titleJSX = (
+		<Helmet key={`title-${pageTitle}`}>
+			<title>{pageTitle}</title>
+		</Helmet>
+	);
+
+	if (state.error) {
+		return (
+			<React.Fragment>
+				{titleJSX}
+				<p key={`error-${pageTitle}`} className="center-text error">
+					{state.error}
+				</p>
+			</React.Fragment>
+		);
 	}
 
-	render(): React.ReactNode | React.ReactNode[] {
-		const { user, posts, loadingUser, loadingPosts, error } = this.state;
-		const pageTitle = error
-			? error
-			: loadingUser === true
-			? 'Loading User'
-			: user.id;
-		const titleJSX = (
-			<Helmet key={`title-${pageTitle}`}>
-				<title>{pageTitle}</title>
-			</Helmet>
-		);
-
-		if (error) {
-			return [
-				titleJSX,
-				<p key={`error-${pageTitle}`} className="center-text error">
-					{error}
-				</p>,
-			];
-		}
-
-		return [
-			titleJSX,
+	return (
+		<React.Fragment>
+			{titleJSX}
 			<React.Fragment key={`user-${pageTitle}`}>
-				{loadingUser === true ? (
+				{state.loadingUser === true ? (
 					<Loading text="Fetching User" />
 				) : (
 					<React.Fragment>
-						<h1 className="header">{user.id}</h1>
+						<h1 className="header">{state.user.id}</h1>
 						<div className="meta-info-light">
 							<span>
-								joined <b>{formatDate(user.created)}</b>
+								joined <b>{formatDate(state.user.created)}</b>
 							</span>
 							<span>
-								has <b>{user.karma.toLocaleString()}</b> karma
+								has <b>{state.user.karma.toLocaleString()}</b>{' '}
+								karma
 							</span>
 						</div>
-						<p dangerouslySetInnerHTML={{ __html: user.about }} />
+						<p
+							dangerouslySetInnerHTML={{
+								__html: state.user.about,
+							}}
+						/>
 					</React.Fragment>
 				)}
-				{loadingPosts === true ? (
-					loadingUser === false && <Loading text="Fetching posts" />
+				{state.loadingPosts === true ? (
+					state.loadingUser === false && (
+						<Loading text="Fetching posts" />
+					)
 				) : (
 					<React.Fragment>
 						<h2>Posts</h2>
-						<ItemList items={posts} />
+						<ItemList items={state.posts} />
 					</React.Fragment>
 				)}
-			</React.Fragment>,
-		];
-	}
-}
+			</React.Fragment>
+		</React.Fragment>
+	);
+};
+
+export default UserPage;

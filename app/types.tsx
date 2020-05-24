@@ -65,7 +65,7 @@ export const HNTypesPT = PropTypes.oneOf([
 	'ask',
 	'show',
 	'job',
-]);
+] as Array<HNTypes>);
 
 export const AppStatePT = PropTypes.shape({
 	theme: PropTypes.oneOf(['light', 'dark']).isRequired,

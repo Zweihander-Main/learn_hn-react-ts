@@ -5,85 +5,84 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import Loading from './Loading';
 import { HNItemPT as propTypesHNItem, HNItem } from '../types';
 
-interface ItemListProps extends React.Props<ItemList> {
+interface ItemListProps {
 	items?: Array<HNItem>;
 }
 
-interface ItemListState {
+interface ItemListReducerState {
 	hasMore: boolean;
 	loadedItems: Array<HNItem>;
 }
 
-const itemsToLoad = 50;
+const ITEMS_TO_LOAD = 50;
+
+type ItemListReducerActions =
+	| { type: '' }
+	| { type: 'addMorePosts'; items: Array<HNItem> };
+
+function itemListReducer(
+	state: ItemListReducerState,
+	action: ItemListReducerActions
+): ItemListReducerState {
+	switch (action.type) {
+		case '': {
+			return { ...state };
+		}
+		case 'addMorePosts': {
+			const { loadedItems } = state;
+			const { items } = action;
+			const newLength = loadedItems.length + ITEMS_TO_LOAD;
+			const newItems = items.slice(0, newLength);
+
+			return {
+				...state,
+				loadedItems: newItems,
+				hasMore: items.length > newLength ? true : false,
+			};
+		}
+	}
+}
 
 /**
  * Creates list of posts from given array of post data. Will lazy load/infinite
  * scroll data beyond itemsToLoad limit.
- *
- * @class      ItemList
  */
-export default class ItemList extends React.Component<
-	ItemListProps,
-	ItemListState
-> {
-	static propTypes = {
-		item: PropTypes.arrayOf(propTypesHNItem),
-	};
-	state: ItemListState;
+const ItemList: React.FC<ItemListProps> = ({ items }: ItemListProps) => {
+	const [state, dispatch] = React.useReducer(
+		itemListReducer,
+		items?.length > 0
+			? {
+					hasMore: true,
+					loadedItems: items.slice(0, ITEMS_TO_LOAD),
+			  }
+			: {
+					hasMore: false,
+					loadedItems: [],
+			  }
+	);
 
-	constructor(props: ItemListProps) {
-		super(props);
-		const { items } = this.props;
+	return (
+		<ul>
+			{state.loadedItems?.length > 0 ? (
+				<InfiniteScroll
+					dataLength={state.loadedItems.length}
+					next={() => dispatch({ type: 'addMorePosts', items })}
+					hasMore={state.hasMore}
+					loader={<Loading text="Loading more posts" />}
+				>
+					{state.loadedItems.map((item: HNItem) => (
+						<ItemListSingle key={item.id} item={item} />
+					))}
+				</InfiniteScroll>
+			) : (
+				<p className="center-text">No items to display</p>
+			)}
+		</ul>
+	);
+};
 
-		if (items?.length > 0) {
-			this.state = {
-				hasMore: true,
-				loadedItems: items.slice(0, itemsToLoad),
-			};
-		} else {
-			this.state = {
-				hasMore: false,
-				loadedItems: [],
-			};
-		}
-	}
+ItemList.propTypes = {
+	items: PropTypes.arrayOf(propTypesHNItem),
+};
 
-	addMorePosts = (): void => {
-		this.setState(
-			(prevState: ItemListState): ItemListState => {
-				const { loadedItems } = prevState;
-				const { items } = this.props;
-				const newLength = loadedItems.length + itemsToLoad;
-				const newItems = items.slice(0, newLength);
-
-				return {
-					loadedItems: newItems,
-					hasMore: items.length > newLength ? true : false,
-				};
-			}
-		);
-	};
-
-	render(): React.ReactNode {
-		const { hasMore, loadedItems } = this.state;
-
-		return (
-			<ul>
-				{loadedItems?.length > 0 ? (
-					<InfiniteScroll
-						dataLength={loadedItems.length}
-						next={this.addMorePosts}
-						hasMore={hasMore}
-						loader={<Loading text="Loading more posts" />}
-					>
-						{loadedItems.map((item: HNItem) => (
-							<ItemListSingle key={item.id} item={item} />
-						))}
-					</InfiniteScroll>
-				) : (
-					<p className="center-text">No items to display</p>
-				)}
-			</ul>
-		);
-	}
-}
+export default ItemList;

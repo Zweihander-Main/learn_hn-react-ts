@@ -292,31 +292,10 @@ exports[`Snapshots are matched for  PostMetaInfo component 1`] = `
 
 exports[`Snapshots are matched for  PostPage component 1`] = `
 <DocumentFragment>
-  <h1
-    class="header"
-  >
-    <a
-      class="link"
-    />
-  </h1>
-  <div
-    class="meta-info-light"
-  >
-    <span>
-      by 
-      <a
-        href="/user?id="
-      />
-    </span>
-    <span>
-      on 12/31/1969, 7:00 PM
-    </span>
-  </div>
-  <p />
   <p
     style="font-size: 35px; margin-top: 20px; text-align: center;"
   >
-    Loading comment
+    Fetching post
   </p>
 </DocumentFragment>
 `;
