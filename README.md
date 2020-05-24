@@ -10,13 +10,16 @@
 -   State handover between post lists and individual listings (reduces API requests)
 -   Other available story type listings
 -   Links back to original HN submissions
+-   Added Jest snapshot testing for all of the components
 
 ### Tech stack:
 
 -   TypeScript
--   React
+-   React + Hooks
 -   React-router
 -   PostCSS
+-   Jest
+-   React Testing Library
 -   Webpack
 
 ### Live demo:
@@ -35,6 +38,8 @@
 -   `npm run dev`: Create development build and serve it on dev server
 -   `npm run build`: Build application for production (build directory: dist)
 -   `npm run build-win`: Build application for production in Windows
+-   `npm run test`: Run tests
+-   `npm run testWatch`: Run tests in watch mode
 
 ### Current TODOs:
 
